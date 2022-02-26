@@ -1,0 +1,40 @@
+PROBLEM LINK----> https://leetcode.com/problems/palindromic-substrings/
+
+#Dynamic Programming -Tabulation
+
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        count=0
+        dp=[[False for j in range(len(s))] for i in range(len(s))]
+        for i in range(len(s)):
+            for j in range(len(s)):
+                if i==j:
+                    dp[i][j]=True
+                    count+=1
+        for j in range(1,len(s)):
+            for i in range(j):
+                if j-i==1 and s[i]==s[j]:
+                    dp[i][j]=True
+                    count+=1
+                elif dp[i+1][j-1]==True and s[i]==s[j]:
+                    dp[i][j]=True
+                    count+=1
+        return count
+
+#Two Pointer
+
+class Solution:
+    def countSubstrings(self, s: str) -> int:
+        res=0
+        for i in range(len(s)):
+            l,r=i,i
+            while l>=0 and r<len(s) and s[l]==s[r]:
+                res+=1
+                r+=1
+                l-=1
+            l,r=i,i+1
+            while l>=0 and r<len(s) and s[l]==s[r]:
+                res+=1
+                r+=1
+                l-=1
+        return res
