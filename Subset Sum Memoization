@@ -1,0 +1,19 @@
+def ss(arr,ind,req,dp):
+    if req==0:
+        return True
+    if ind<0:
+        return False
+    if dp[ind][req]!=-1:
+        return dp[ind][req]
+    if arr[ind-1]>req:
+        ss(arr, ind - 1, req,dp)
+    left = ss(arr,ind-1,req-arr[ind],dp)
+    right = ss(arr,ind-1,req,dp)
+    dp[ind][req] = left or right
+    return dp[ind][req]
+
+arr = [3,2,6,4]
+req = 9
+ind = len(arr)-1
+dp = [[-1]*(req+1) for i in range(ind+1)]
+print(ss(arr,ind,req,dp))
