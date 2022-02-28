@@ -1,19 +1,17 @@
-def ss(arr,ind,req,dp):
-    if req==0:
-        return True
-    if ind<0:
-        return False
-    if dp[ind][req]!=-1:
-        return dp[ind][req]
-    if arr[ind-1]>req:
-        ss(arr, ind - 1, req,dp)
-    left = ss(arr,ind-1,req-arr[ind],dp)
-    right = ss(arr,ind-1,req,dp)
-    dp[ind][req] = left or right
-    return dp[ind][req]
-
-arr = [3,2,6,4]
-req = 9
-ind = len(arr)-1
-dp = [[-1]*(req+1) for i in range(ind+1)]
-print(ss(arr,ind,req,dp))
+def isSubsetSum (self, N, arr, summ):
+        dp = [[-1]*(summ+1) for i in range(N+1)]
+        def helper(N,summ,arr,dp):
+            if dp[N][summ]!=-1:
+                return dp[N][summ]
+            if summ== 0:
+                dp[N][summ] = True
+                return dp[N][summ]
+            if N == 0:
+                dp[N][summ] = False
+                return dp[N][summ]
+            if arr[N-1]>summ:
+                dp[N][summ] = helper(N-1,summ,arr,dp)
+                return dp[N][summ]
+            dp[N][summ] = helper(N-1,summ,arr,dp) or helper(N-1,summ-arr[N-1],arr,dp)
+            return dp[N][summ]
+        return helper(N,summ,arr,dp)
