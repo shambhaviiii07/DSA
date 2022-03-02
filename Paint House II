@@ -25,34 +25,47 @@ class Solution:
  
  
  Approach 2:Dynamic Programming
-import math
 class Solution:
+    """
+    @param costs: n x k cost matrix
+    @return: an integer, the minimum cost to paint all houses
+    """
     def minCostII(self, costs):
-        if len(costs)==0:
+        if len(costs) == 0:
             return 0
-        k=len(costs[0])
-        min_value=math.inf
-        s_min_value=math.inf  #second minimum
-        for i in range(k):
-            curr_value=costs[0][i]
-            if curr_value<min_value:
-                s_min_value=min_value
-                min_value=curr_value
-            elif curr_value<s_min_value:
-                s_min_value=curr_value
+        fir_min = float('inf')
+        sec_min = float('inf')
+        i_f = -1
+        i_s = -1
+        for i in range(len(costs[0])):
+            if costs[0][i]<fir_min:   
+                sec_min = fir_min
+                i_s = i_f
+                fir_min = costs[0][i]
+                i_f = i
+            elif costs[0][i]<sec_min:
+                sec_min = costs[0][i]  
+                i_s = i  
         for i in range(1,len(costs)):
-            new_min=math.inf
-            new_s_min=math.inf
-            for j in range(len(costs[0])):
-                if costs[i-1][j]!=min_value:
-                    costs[i][j]+=min_value
+            prev_fir_min = fir_min
+            prev_sec_min = sec_min
+            prev_i_f = i_f
+            prev_i_s = i_s
+            fir_min = float('inf')
+            sec_min = float('inf')
+            for k in range(len(costs[0])):
+                if k!=prev_i_f:
+                    costs[i][k] += prev_fir_min
                 else:
-                    costs[i][j]+=s_min_value
-                if costs[i][j]<new_min:
-                    new_s_min=new_min
-                    new_min=costs[i][j]
-                elif costs[i][j]<new_s_min:
-                    new_s_min=costs[i][j]
-            min_value=new_min
-            s_min_val=new_s_min
+                    costs[i][k] += prev_sec_min 
+
+                if costs[i][k]<fir_min:
+                    sec_min = fir_min
+                    i_s = i_f
+                    fir_min = costs[i][k]
+                    i_f = k
+                elif costs[i][k]<sec_min:
+                    sec_min = costs[i][k]  
+                    i_s = k
+         
         return min(costs[-1])
