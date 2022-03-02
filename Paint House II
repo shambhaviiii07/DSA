@@ -35,8 +35,8 @@ class Solution:
             return 0
         fir_min = float('inf')
         sec_min = float('inf')
-        i_f = -1
-        i_s = -1
+        i_f = -1                   #initializing first min index
+        i_s = -1                   #initializing second min index
         for i in range(len(costs[0])):
             if costs[0][i]<fir_min:   
                 sec_min = fir_min
