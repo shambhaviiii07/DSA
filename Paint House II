@@ -27,32 +27,32 @@ class Solution:
  Approach 2:Dynamic Programming
 import math
 class Solution:
-    def minFallingPathSum(self, grid: List[List[int]]) -> int:
-        if len(grid)==0:
+    def minCostII(self, costs):
+        if len(costs)==0:
             return 0
-        n=len(grid)
+        k=len(costs[0])
         min_value=math.inf
-        s_min_value=math.inf #second minimum value
-        for i in range(n):
-            curr_value=grid[0][i]
+        s_min_value=math.inf  #second minimum
+        for i in range(k):
+            curr_value=costs[0][i]
             if curr_value<min_value:
                 s_min_value=min_value
                 min_value=curr_value
             elif curr_value<s_min_value:
                 s_min_value=curr_value
-        for i in range(1,n):
-            new_min_val=math.inf
-            new_s_min_val=math.inf
-            for j in range(n):
-                if grid[i-1][j]!=min_value:
-                    grid[i][j]+=min_value
+        for i in range(1,len(costs)):
+            new_min=math.inf
+            new_s_min=math.inf
+            for j in range(len(costs[0])):
+                if costs[i-1][j]!=min_value:
+                    costs[i][j]+=min_value
                 else:
-                    grid[i][j]+=s_min_value
-                if grid[i][j]<new_min_val:
-                    new_s_min_val=new_min_val
-                    new_min_val=grid[i][j]
-                elif grid[i][j]<new_s_min_val:
-                    new_s_min_val=grid[i][j]
-            min_value=new_min_val
-            s_min_value=new_s_min_val
-        return min(grid[-1])
+                    costs[i][j]+=s_min_value
+                if costs[i][j]<new_min:
+                    new_s_min=new_min
+                    new_min=costs[i][j]
+                elif costs[i][j]<new_s_min:
+                    new_s_min=costs[i][j]
+            min_value=new_min
+            s_min_val=new_s_min
+        return min(costs[-1])
