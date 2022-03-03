@@ -1,0 +1,17 @@
+def solve(string,i):
+    ans=0
+    if i==len(string)-1 or i==len(string):
+        return 1
+    if string[i]=='0':
+        return 0
+    ans=solve(string,i+1)
+    if int(string[i:i+2])<=26:
+        ans+=solve(string,i+2)
+    return ans
+def decode(string):
+    return solve(string,0)
+if __name__=='__main__':
+    string="2306"
+    print(decode(string))
+Problem Link---->
+https://www.spoj.com/problems/ACODE/
