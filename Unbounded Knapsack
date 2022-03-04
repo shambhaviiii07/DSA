@@ -1,0 +1,24 @@
+def unboundedKnapsack(n,w,dp):
+    if w==0 or n==0:
+        return 0
+    if dp[n][w]!=0:
+        return dp[n][w]
+    if wt[n-1]<=w:
+        dp[n][w]=max(val[n-1]+unboundedKnapsack(n,w-wt[n-1],dp),unboundedKnapsack(n-1,w,dp))
+        return dp[n][w]
+    else:
+        dp[n][w]=unboundedKnapsack(n-1,w,dp)
+        return dp[n][w]
+def RecursiveUnboundedKnapsack(n,w):
+    if w==0 or n==0:
+        return 0
+    if w>=wt[n-1]:
+        return max(val[n-1]+unboundedKnapsack(n,w-wt[n-1]),unboundedKnapsack(n-1,w))
+    return unboundedKnapsack(n-1,w)
+    
+w = 100
+val = [10, 30, 20]
+wt = [5, 10, 15]
+n = len(val)
+dp=[[0 for i in range(w+1)]for j in range(n+1)]
+print(unboundedKnapsack(n,w,dp))
