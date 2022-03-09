@@ -1,0 +1,17 @@
+Problem Link--->https://practice.geeksforgeeks.org/problems/rod-cutting0840/1/#
+
+Recursive
+from functools import lru_cache
+class Solution:
+    def cutRod(self, price, n):
+        #code here
+        rod_lenght=[i for i in range(1,n+1)]
+        @lru_cache(None)
+        def solve(n,idx):
+            if idx==0 or n==0:
+                return 0
+            if rod_lenght[idx-1]<=n:
+                return max(solve(n-rod_lenght[idx-1],idx)+price[idx-1],solve(n,idx-1))
+            else:
+                return solve(n,idx-1)
+        return solve(n,n)
