@@ -1,0 +1,26 @@
+Problem Link--->https://leetcode.com/problems/word-ladder/
+
+class Solution:
+    def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        count=0
+        wordSet=set(wordList)
+        if endWord not in wordSet:
+            return 0
+        if beginWord in wordSet:
+            wordSet.remove(beginWord)
+        queue=deque()
+        queue.append(beginWord)
+        while queue:
+            count+=1
+            lenght=len(queue)
+            for i in range(lenght):
+                currWord=queue.popleft()
+                for j in range(len(currWord)):
+                    for alphabet in ascii_lowercase:
+                        temp=currWord[:j]+alphabet+currWord[j+1:]
+                        if temp in wordSet:
+                            queue.append(temp)
+                            if temp == endWord:
+                                return count+1
+                            wordSet.remove(temp)
+        return 0
