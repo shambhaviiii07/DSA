@@ -1,0 +1,22 @@
+Problem Link--->https://leetcode.com/problems/binary-tree-paths/
+
+class Solution:
+    def dfs(self,root,l):
+        if root is None:
+            return 
+        l.append(str(root.val))
+        if root.right is None and root.left is None:
+            self.ans.append(l[:])
+            l.pop()
+            return
+        self.dfs(root.left,l)
+        self.dfs(root.right,l)
+        l.pop()
+        return
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        self.ans=[]
+        l=[]
+        self.dfs(root,l)
+        for i in range(len(self.ans)):
+            self.ans[i]="->".join(self.ans[i])
+        return self.ans
