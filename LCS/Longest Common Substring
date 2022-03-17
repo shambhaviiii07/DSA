@@ -1,5 +1,21 @@
 Problem Link--->https://practice.geeksforgeeks.org/problems/longest-common-substring1452/1#
 
+
+# Recursive
+
+class Solution:
+    def longestCommonSubstr(self, S1, S2, n, m):
+        # code here
+        def recursive(n,m,count):
+            if n==0 or m==0:
+                return 0
+            if S1[m-1]==S2[n-1]:
+                count=recursive(n-1,m-1,count+1)
+            count=max(count,max(recursive(n-1,m,0),recursive(n,m-1,0)))
+            return count
+        return recursive(len(S2),len(S1),0)
+        
+        
 #TABULATION
 class Solution:
     def longestCommonSubstr(self, S1, S2, n, m):
