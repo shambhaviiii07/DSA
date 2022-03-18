@@ -1,0 +1,12 @@
+Problem Link--->https://practice.geeksforgeeks.org/problems/longest-repeating-subsequence2004/1/#
+
+class Solution:
+	def LongestRepeatingSubsequence(self, s):
+        dp=[["" for j in range(len(s)+1)]for i in range(len(s)+1)]
+        for i in range(1,len(s)+1):
+            for j in range(1,len(s)+1):
+                if s[i-1]==s[j-1] and i!=j:
+                    dp[i][j]=dp[i-1][j-1]+s[i-1]
+                else:
+                    dp[i][j]=max(dp[i-1][j],dp[i][j-1],key=len)
+        return len(dp[-1][-1])
