@@ -1,0 +1,20 @@
+Problem Link--->https://leetcode.com/problems/shortest-path-in-binary-matrix/
+
+class Solution:
+    def shortestPathBinaryMatrix(self, grid: List[List[int]]) -> int:
+        queue=deque()
+        if grid[0][0]==1 or grid[-1][-1]==1:
+            return -1
+        queue.append((0,0,1))
+        directions=[[1,0],[-1,0],[0,-1],[0,1],[-1,-1],[1,1],[-1,1],[1,-1]]
+        while queue:
+            row,col,distance=queue.popleft()
+            if row==len(grid)-1 and col==len(grid[0])-1:
+                    return distance
+            for direction in directions:
+                new_row,new_col=row+direction[0],col+direction[1]
+                if new_row<0 or new_row>=len(grid) or new_col<0 or new_col>=len(grid[0]) or grid[new_row][new_col]==1:
+                    continue
+                grid[new_row][new_col]=1
+                queue.append((new_row,new_col,distance+1))
+        return -1
