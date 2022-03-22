@@ -1,0 +1,16 @@
+Problem Link--->https://practice.geeksforgeeks.org/problems/smallest-number-on-left3403/1/#
+
+class Solution:
+    def leftSmaller(self, n, a):
+        # code here
+        stack=[]
+        ans=[]
+        for i in range(n):
+            while stack and stack[-1]>=a[i]:
+                stack.pop()
+            if stack:
+                ans.append(stack[-1])
+            else:
+                ans.append(-1)
+            stack.append(a[i])
+        return ans
