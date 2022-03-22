@@ -1,0 +1,13 @@
+Problem Link-->https://practice.geeksforgeeks.org/problems/immediate-smaller-element1142/1#
+a=[4, 2, 1, 5, 3]
+n=len(a)
+ans=[]
+for i in range(n-1,-1,-1):
+    if i==n-1:
+        ans.append(-1)
+    elif a[i]>a[i+1]:
+        ans.append(a[i+1])
+    else:
+        ans.append(-1)
+ans.reverse()
+print(ans)
