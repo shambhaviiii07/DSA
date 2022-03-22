@@ -1,0 +1,13 @@
+stack=[]
+ans=[]
+a=[2,7,3,5,4,6,8]
+n=len(a)
+for i in range(n):
+    while stack and stack[-1]<=a[i]:
+        stack.pop()
+    if stack:
+        ans.append(stack[-1])
+    else:
+        ans.append(-1)
+    stack.append(a[i])
+print(ans)
