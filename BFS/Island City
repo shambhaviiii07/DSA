@@ -1,0 +1,37 @@
+Problem Link--->https://www.lintcode.com/problem/897/description
+
+from typing import (
+    List,
+)
+from collections import deque
+class Solution:
+    def numIslandCities(self, grid):
+        def bfs(Row,Col,city):
+            que.append((Row, Col))
+            visited.add((Row,Col))
+            city = False
+            while len(que) > 0:
+                row, col = que.popleft()
+                if grid[row][col] == 2:
+                    city = True
+                for directionRow, directionCol in directions:
+                    r = row + directionRow
+                    c = col +directionCol
+                    if r not in range(len(grid)) or c not in range(len(grid[0])) or \
+                    (r,c) in visited or grid[r][c] == 0:
+                        continue
+                    visited.add((r,c))
+                    que.append((r, c))
+            return city
+        
+        que = deque()
+        ans = 0
+        visited = set()
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if (i,j) in visited or grid[i][j] == 0:
+                    continue
+                elif bfs(i,j,False):
+                    ans+=1
+        return ans
