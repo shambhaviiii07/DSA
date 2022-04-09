@@ -1,0 +1,26 @@
+Problem Link--->https://leetcode.com/problems/number-of-islands
+class Solution:
+    def bfs(self,Row,Col):
+            queue=deque()
+            queue.append((Row,Col))
+            self.visited.add((Row,Col))
+            while queue:
+                row,col=queue.popleft()
+                directions=[[0,1],[1,0],[-1,0],[0,-1]]
+                for directionRow,directionCol in directions:
+                    r,c=row+directionRow,col+directionCol
+                    if r in range(len(self.grid)) and c in range(len(self.grid[0])) and (r,c) not in self.visited and self.grid[r][c]=="1":
+                        queue.append((r,c))
+                        self.visited.add((r,c))
+    def numIslands(self, grid: List[List[str]]) -> int:
+        self.grid=grid
+        if len(grid)==0:
+            return 0
+        numberOfIslands=0
+        self.visited=set()
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j]=="1" and (i,j) not in self.visited:
+                    self.bfs(i,j)
+                    numberOfIslands+=1
+        return numberOfIslands
