@@ -1,0 +1,22 @@
+Problem Link--->https://leetcode.com/problems/jump-game-ii/
+
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        queue=collections.deque()
+        end=len(nums)-1
+        count=0
+        visited=set()
+        visited.add(0)
+        queue.append((nums[0],0))
+        while queue:
+            length=len(queue)
+            for _ in range(length):
+                curr,idx=queue.popleft()
+                if idx==end:
+                    return count
+                for i in range(1,curr+1):
+                    if idx+i not in visited and idx+i<len(nums):
+                        queue.append((nums[idx+i],idx+i))
+                        visited.add(idx+i)
+            count+=1
+        
