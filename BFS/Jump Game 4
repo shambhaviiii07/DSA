@@ -1,0 +1,30 @@
+class Solution:
+    def minJumps(self, arr: List[int]) -> int:
+        curr=[0]
+        visited={0}
+        steps=0
+        d={}
+        for i in range(len(arr)):
+            if arr[i] not in d:
+                d[arr[i]]=[]
+            d[arr[i]].append(i)
+        while curr:
+            nex=[]
+            for idx in curr:
+                if idx==len(arr)-1:
+                    return steps
+                for i in d[arr[idx]]:
+                    if i not in visited:
+                        visited.add(i)
+                        nex.append(i)
+                d[arr[idx]].clear()
+                if idx+1 in range(len(arr)) and idx+1 not in visited:
+                    nex.append(idx+1)
+                    visited.add(idx+1)
+                if idx-1 in range(len(arr)) and idx-1 not in visited:
+                    nex.append(idx-1)
+                    visited.add(idx-1)
+            curr=nex
+            steps+=1
+        return -1
+                    
