@@ -1,0 +1,23 @@
+Problem Link--->https://leetcode.com/problems/number-of-islands/
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        def dfs(row,col):
+            visited[row][col]=True
+            if row+1 in range(len(grid)) and not visited[row+1][col] and grid[row+1][col]=="1":
+                dfs(row+1,col)
+            if row-1 in range(len(grid)) and not visited[row-1][col] and grid[row-1][col]=="1":
+                dfs(row-1,col)
+            if col+1 in range(len(grid[0])) and not visited[row][col+1] and grid[row][col+1]=="1":
+                dfs(row,col+1)
+            if col-1 in range(len(grid[0])) and not visited[row][col-1] and grid[row][col-1]=="1":
+                dfs(row,col-1)
+        visited=[[False for i in range(len(grid[0]))]for j in range(len(grid))]
+        cell=[]
+        lands=0
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if visited[i][j] is False and  grid[i][j]=="1":
+                    dfs(i,j)
+                    lands+=1
+                
+        return lands
