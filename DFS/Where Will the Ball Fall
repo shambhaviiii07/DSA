@@ -1,0 +1,17 @@
+Problem Link-->https://leetcode.com/problems/where-will-the-ball-fall/
+
+class Solution:
+    def findBall(self, grid: List[List[int]]) -> List[int]:
+        def dfs(row,col):
+            if row==len(grid):
+                return col
+            elif grid[row][col]==1 and col+1<len(grid[0]) and grid[row][col+1]==1:
+                return dfs(row+1,col+1)
+            elif grid[row][col]==-1 and col-1>-1 and grid[row][col-1]==-1:
+                return dfs(row+1,col-1)
+            else:
+                return -1
+        balls=[]
+        for ball in range(len(grid[0])):
+            balls.append(dfs(0,ball))
+        return balls
