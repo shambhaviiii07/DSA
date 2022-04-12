@@ -1,0 +1,68 @@
+Problem Statement:
+Given a number N, let CP(N) denote the number of primes between 1 and N (inclusive of N). We call N a prime counter if CP(N) is a prime (N need not be a prime). 
+For example, CP(3) = 2, CP(4) = 2, CP(5) = 3, CP(7) = 4.
+
+Input Format:
+First-line contains an integer T, a number of test cases. Next T lines each containing two positive integers L, R separated by space.
+
+Output Format:
+T lines containing the number of prime counters between L and R (both inclusive) in the ith test case (or NONE is no prime counter exists in that range).
+
+Constraints:
+L ≤ R ≤ 106
+
+Example 1:
+Input: 1
+       1 10
+Output: 4
+Example 2:
+Input: 2
+       2 20
+       21 30
+Output: 8
+        NONE
+        
+Code:
+def prime_counters(ranges, size):
+    
+    prime_sieve = [True] * (size + 1)
+    cp = [0] * (size + 1)
+    prime_counters = [0] * (size + 1)
+
+    prime_sieve[0] = False
+    prime_sieve[1] = False
+
+    for number in range(2, size + 1):
+        if prime_sieve[number] is True:
+            cp[number] = cp[number - 1] + 1
+        else:
+            cp[number] = cp[number - 1]
+
+        if prime_sieve[cp[number]] is True:
+            prime_counters[number] = prime_counters[number - 1] + 1
+        else:
+            prime_counters[number] = prime_counters[number - 1]
+
+        if prime_sieve[number] is True:
+            for multiple in range(number*number, size + 1, number):
+                prime_sieve[multiple] = False
+
+    for l, r in ranges:
+        ans = prime_counters[r] - prime_counters[l - 1]
+        if ans == 0:
+            print("NONE")
+        else:
+            print(ans)
+
+if __name__ == '__main__':
+    
+    testcases = int(input())
+    ranges = []
+    max_number = 0
+
+    for t in range(testcases):
+        l, r = tuple(map(int, input().split()))
+        ranges.append((l, r))
+        max_number = max(max_number, r)
+
+    prime_counters(ranges, max_number)
