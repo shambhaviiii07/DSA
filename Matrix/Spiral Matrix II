@@ -1,0 +1,16 @@
+Problem Link--->https://leetcode.com/problems/spiral-matrix-ii/
+
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        matrix=[[0 for j in range(n)]for i in range(n)]
+        def solve(row,col,number):
+            if row not in range(n) or col not in range(n) or matrix[row][col]:
+                return
+            matrix[row][col]=number
+            if col+1>=row:
+                solve(row,col+1,number+1)
+            solve(row+1,col,number+1)
+            solve(row,col-1,number+1)
+            solve(row-1,col,number+1)
+            return matrix
+        return solve(0,0,1)
