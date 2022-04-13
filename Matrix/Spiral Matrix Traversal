@@ -1,0 +1,42 @@
+Problem Link--->https://leetcode.com/problems/spiral-matrix/
+
+class Solution:
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        def solve(direction,row,col):
+            ans.append(matrix[row][col])
+            visited[row][col]=True
+            if direction=="E":
+                if col+1 in range(len(matrix[0])) and visited[row][col+1] is False:
+                    solve(direction,row,col+1)
+                else:
+                    direction="S" 
+                    if row+1 in range(len(matrix)) and visited[row+1][col] is False:
+                        solve(direction,row+1,col)
+            if direction=="S":
+                if row+1 in range(len(matrix)) and visited[row+1][col] is False:
+                    solve(direction,row+1,col)
+                else:
+                    direction="W"
+                    if col-1 in range(len(matrix[0])) and visited[row][col-1] is False:
+                        solve(direction,row,col-1)
+            if direction=="W":
+                if col-1 in range(len(matrix[0])) and visited[row][col-1] is False:
+                    solve(direction,row,col-1)
+                else:
+                    direction="N"
+                    if row-1 in range(len(matrix)) and visited[row-1][col] is False:
+                        solve(direction,row-1,col)
+            if direction=="N":
+                if row-1 in range(len(matrix)) and visited[row-1][col] is False:
+                    solve(direction,row-1,col)
+                else:
+                    direction="E"
+                    if col+1 in range(len(matrix[0])) and visited[row][col+1] is False:
+                        solve(direction,row,col+1)
+            if len(ans)==len(matrix)*len(matrix[0]):
+                return ans
+        direction="E"
+        ans=[]
+        visited=[[False for j in range(len(matrix[0]))]for i in range(len(matrix))]
+        return solve(direction,0,0)
+        
