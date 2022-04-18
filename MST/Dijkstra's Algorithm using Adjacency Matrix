@@ -1,0 +1,44 @@
+from heapq import *
+import math
+def buildGraph(v,edges):
+    graph=[[-1 for col in range(v+1)]for row in range(v+1)]
+    for edge in edges:
+        src,dest,wt=edge[0],edge[1],edge[2]
+        graph[src][dest]=wt
+    return graph
+def dijkstra(v,edges,src,dest):
+    costGraph=buildGraph(v,edges)
+    distance=[math.inf]*(v+1)
+    parent=[-1]*(v+1)
+    visited=[False]*(v+1)
+    minHeap=[]
+    heappush(minHeap,(0,src))
+    distance[src]=0
+    while minHeap:
+        currDistance,currNode=heappop(minHeap)
+        if currNode==dest:
+            return currDistance
+        if visited[currNode] is False:
+            visited[currNode]=True
+            for nbr in range(1,v+1):
+                if costGraph[currNode][nbr]!=-1 and currDistance+costGraph[currNode][nbr]<distance[nbr]:
+                    distance[nbr]=currDistance+costGraph[currNode][nbr]
+                    parent[nbr]=currNode
+                    heappush(minHeap,(distance[nbr],nbr))
+    return distance[dest] if distance[dest]!=math.inf else -1
+if __name__=="__main__":
+    edges=[]
+    v,e=tuple(map(int,input().split()))
+    for i in range(e):
+        src,dest,wt=tuple(map(int,input().split()))
+        edges.append([src,dest,wt])
+    print(dijkstra(v,edges,1,4))
+# Input:
+# 4 5
+# 1 2 2
+# 1 3 9
+# 1 4 14
+# 2 3 9
+# 3 4 2
+# Output:
+# 11
