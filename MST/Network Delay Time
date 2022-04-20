@@ -1,0 +1,33 @@
+Problem Link--->https://leetcode.com/problems/network-delay-time/
+
+import math
+from heapq import *
+def buildGraph(edges,n):
+    cost=[[-1 for _ in range(n+1)]for __ in range(n+1)]
+    for i in edges:
+        u,v,w=i[0],i[1],i[2]
+        cost[u][v]=w
+    return cost
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, src: int) -> int:
+        visited=[False for _ in range(n+1)]
+        distance=[math.inf for _ in range(n+1)]
+        minHeap=[]
+        cost=buildGraph(times,n)
+        distance[src]=0
+        heappush(minHeap,(0,src))
+        while minHeap:
+            dis,node=heappop(minHeap)
+            if visited[node] is not True:
+                visited[node]=True
+                for vertex in range(1,n+1):
+                    if cost[node][vertex]!=-1 and distance[node]+cost[node][vertex]<distance[vertex]:
+                        distance[vertex]=distance[node]+cost[node][vertex]
+                        heappush(minHeap,(distance[vertex],vertex))
+        maxTime=-math.inf
+        for i in range(1,n+1):
+            if distance[i]==math.inf:
+                return -1
+            else:
+                maxTime=max(maxTime,distance[i])
+        return maxTime
