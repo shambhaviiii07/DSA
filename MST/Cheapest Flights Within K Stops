@@ -1,0 +1,42 @@
+Problem Link--->https://leetcode.com/problems/cheapest-flights-within-k-stops/
+
+def build_graph(n,flights):
+    price_graph=[[-1 for i in range(n)] for j in range(n)]
+    for flight in flights:
+        src=flight[0]
+        dest=flight[1]
+        price=flight[2]
+        price_graph[src][dest]=price
+    return price_graph
+
+class Solution:
+    def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dest: int, k: int) -> int:
+        graph=build_graph(n,flights)
+        distance=[math.inf]*n
+        stops=[0]*n
+        
+        min_heap=[]
+        
+        distance[src]=0
+        
+        heappush(min_heap,(distance[src],src,stops[src]))
+        while min_heap:
+            curr_dist,curr_node,curr_stop=heappop(min_heap)
+            if curr_node==dest:
+                return curr_dist
+            
+            if curr_stop==k+1:
+                continue
+            
+            for vertex in range(n):
+                if graph[curr_node][vertex]!=-1:
+                    next_dist=curr_dist+graph[curr_node][vertex]
+                    next_stop=curr_stop+1
+                    
+                    if next_dist < distance[vertex]:
+                        distance[vertex]=next_dist
+                        stops[vertex]=next_stop
+                        heappush(min_heap,(distance[vertex],vertex,stops[vertex]))
+                    elif next_stop<stops[vertex]:
+                        heappush(min_heap,(next_dist,vertex,next_stop))
+        return -1
