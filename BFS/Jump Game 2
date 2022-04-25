@@ -19,4 +19,19 @@ class Solution:
                         queue.append((nums[idx+i],idx+i))
                         visited.add(idx+i)
             count+=1
-        
+
+
+Dynamic Programming Approach
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        if len(nums)<2:
+            return 0
+        dp=[0 for i in range(len(nums))]
+        for i in range(len(nums)):
+            if i==0 or dp[i]!=0:
+                for j in range(i+1,i+nums[i]+1):
+                    if j<len(nums) and dp[j]==0 :
+                        dp[j]=dp[i]+1
+                if dp[-1]!=0:
+                    return dp[-1]
+                
