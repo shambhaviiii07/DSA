@@ -1,0 +1,31 @@
+Problem Link--->https://leetcode.com/problems/min-cost-to-connect-all-points/
+
+class Solution:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        def findSet(node,parent):#returns the leader parent of the set
+            if parent[node]==-1:
+                return node
+            return findSet(parent[node],parent)
+        def unionSet(u,v,parent):
+            lpU=findSet(u,parent)
+            lpV=findSet(v,parent)
+            if lpU!=lpV:
+                parent[lpV]=lpU
+        def kruskalsMST(vertices,edges):
+            edges.sort(key=lambda x:x[2])
+            parent=[-1]*vertices
+            ans=0
+            for edge in edges:
+                u,v,w=edge[0],edge[1],edge[2]
+                lpU=findSet(u,parent)
+                lpV=findSet(v,parent)
+                if lpU!=lpV:
+                    unionSet(u,v,parent)
+                    ans+=w
+            return ans
+        edges=[]
+        for i in range(len(points)):
+            for j in range(i+1,len(points)):
+                distance=abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1])
+                edges.append([i,j,distance])
+        return kruskalsMST(len(points),edges)
