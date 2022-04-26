@@ -1,5 +1,6 @@
 Problem Link--->https://www.tutorialspoint.com/optimize-water-distribution-in-a-village-in-python
 
+Using Kruskal's Algorithm
 
 class Solution(object):
    def find(self, a):
@@ -33,3 +34,49 @@ class Solution(object):
    
 ob = Solution()
 print(ob.minCostToSupplyWater(3, [1,2,2], [[1,2,1],[2,3,1]]))
+
+Using Prim's Algorithm
+
+import math
+def build_graph(n,wells,pipes):
+    graph = [[-1]*(n+1) for _ in range(n+1)]
+    for pipe in pipes:
+        house1 = pipe[0]
+        house2 = pipe[1]
+        cost = pipe[2]
+        graph[house1][house2] = cost
+        graph[house2][house1] = cost
+    for i in range(len(wells)):
+        graph[0][i+1] = wells[i]
+        graph[i+1][0] = wells[i]
+    return graph
+
+def find_min_distance(distance,visited,n):
+    node=-1
+    mini=math.inf
+    for i in range(n+1):
+        if mini>distance[i] and visited[i]!=True:
+            mini=distance[i]
+            node=i
+    return node
+def prims(graph,n):
+    distance=[math.inf for i in range(n+1)]
+    visited=[False for j in range(n+1)]
+    distance[0]=0
+    for i in range(n+1):
+        vertex=find_min_distance(distance,visited,n)
+        visited[vertex]=True 
+        for j in range(n+1):
+            if graph[vertex][j]!=-1:
+                if graph[vertex][j]<distance[j] and visited[j] is not True:
+                    distance[j]=graph[vertex][j]
+    return sum(distance)
+def solve(n,wells,pipes):
+    graph = build_graph(n,wells,pipes)
+    print(prims(graph,n))
+
+if __name__ == "__main__":
+    n = 5
+    wells = [2,0,1,2,3]
+    pipes = [[1,2,1],[2,3,2],[4,5,3]]
+    solve(n,wells,pipes)
