@@ -1,0 +1,38 @@
+Problem Link--->https://leetcode.com/problems/smallest-string-with-swaps/
+
+class Solution:
+    def smallestStringWithSwaps(self, s: str, pairs: List[List[int]]) -> str:
+        if len(pairs)<1:
+            return s
+        def dfs(node,temp):
+            visited[node]=True
+            temp.append(node)
+            for dost in graph[node]:
+                if visited[dost] is not True:
+                    dfs(dost,temp)
+            return temp
+        graph={i:[] for i in range(len(s))}
+        s=list(s)
+        visited=[0]*len(s)
+        for u,v in pairs:
+            
+            graph[u].append(v)
+            graph[v].append(u)
+        
+        for i in range(len(s)):
+            if visited[i] is not True:
+                t=dfs(i,[])
+            #print(t)
+            if len(t)==len(s):
+                return "".join(sorted(s))
+            else:
+                l=[]
+                for k in t:
+                    l.append(s[k])
+                t.sort()
+                l.sort()
+                counter=0
+                for k in t:
+                    s[k]=l[counter]
+                    counter+=1
+        return "".join(s)
