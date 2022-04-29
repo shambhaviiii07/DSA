@@ -1,0 +1,29 @@
+from math import factorial
+from queue import deque
+
+numberOfHouses=int(input())
+infectedHouses=int(input())
+houses=[0]*(numberOfHouses)
+
+queue=deque()
+
+for i in range(infectedHouses):
+    n=int(input())
+    houses[n-1]=1
+    queue.append(n-1)
+
+ways=1
+while queue:
+    l=len(queue)
+   
+    for i in range(l):
+        node=queue.popleft()
+        if node-1>=0 and houses[node-1]==0:
+            houses[node-1]=1
+            queue.append(node-1)
+        
+        if node+1<numberOfHouses and houses[node+1]==0:
+            houses[node+1]=1
+            queue.append(node+1)
+    ways=ways*factorial(len(queue))
+print(ways)
