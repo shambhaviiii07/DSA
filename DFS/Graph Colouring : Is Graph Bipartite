@@ -1,0 +1,21 @@
+Problem Link--->https://leetcode.com/problems/is-graph-bipartite/
+
+class Solution:
+    def isBipartite(self, graph: List[List[int]]) -> bool:
+        def dfs(node):
+            if colour[node]==-1:
+                colour[node]=1
+            for i in graph[node]:
+                if colour[i]==-1:
+                    colour[i]=1-colour[node]
+                    if not dfs(i):
+                        return False
+                elif colour[i]==colour[node]:
+                    return False
+            return True
+        colour=[-1 for i in range(len(graph))]
+        for i in range(len(graph)):
+            if colour[i]==-1:
+                if not dfs(i):
+                    return False
+        return True
