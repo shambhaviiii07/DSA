@@ -1,3 +1,5 @@
+Method I
+
 def leftSideView(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
             return
@@ -20,3 +22,23 @@ def leftSideView(self, root: Optional[TreeNode]) -> List[int]:
             ans.append(i[0].val)
         print(ans)
         return
+
+Method II
+
+def leftSideView(self, root: Optional[TreeNode]) -> List[int]:
+        left_view=[]
+        levelSet=set()
+        if root is None:
+            return left_view
+        def postOrder(root,level):
+            if level not in levelSet:
+                left_view.append(root.val)
+                levelSet.add(level)
+            if root.left:
+                postOrder(root.left,level+1)
+            if root.right:
+                postOrder(root.right,level+1)
+            
+            
+        postOrder(root,0)
+        return left_view
