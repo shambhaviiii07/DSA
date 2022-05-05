@@ -1,0 +1,22 @@
+def leftSideView(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return
+        bfs=[]
+        queue=deque()
+        queue.append(root)
+        while queue:
+            length=len(queue)
+            t=[]
+            for i in range(length):
+                curr=queue.popleft()
+                if curr.left:
+                    queue.append(curr.left)
+                if curr.right:
+                    queue.append(curr.right)
+                t.append(curr)
+            bfs.append(t)
+        ans=[]
+        for i in bfs:
+            ans.append(i[0].val)
+        print(ans)
+        return
