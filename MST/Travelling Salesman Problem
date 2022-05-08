@@ -1,0 +1,21 @@
+Travelling Salesman Problem (Recursive)
+
+import math
+def TSP(cities,visited,city,n):
+    if visited==((1<<n)-1):
+        return cities[city][0]
+    
+    finalCost=math.inf
+    for c in range(n):
+        if visited & (1<<c)==0:
+            tempCost=cities[city][c]+TSP(cities,visited | (1<<c),c,n)
+            finalCost=min(finalCost,tempCost)
+    return finalCost
+if __name__=="__main__":
+    cities=[[0,20,42,25],
+          [20,0,30,34],
+          [42,30,0,10],
+          [25,34,10,0]]
+    vertices=4
+    
+    print(TSP(cities,1,0,vertices))
