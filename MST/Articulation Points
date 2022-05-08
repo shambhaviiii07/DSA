@@ -1,0 +1,44 @@
+def dfs(node,parent,visited,discoveryTime,lowestTime,articulationPoints,graph,timer):
+    visited[node]=1
+    discoveryTime=timer
+    lowestTime=timer
+    timer+=1
+    child=0
+    for dost in graph[node]:
+        if dost == parent:
+            continue
+        elif visited[dost]==0:
+            dfs(dost,node,visited,discoveryTime,lowestTime,articulationPoints,graph,timer)
+            lowestTime[node]=min(lowestTime[node],lowestTime[dost])
+            if lowestTime[dost]>=discoveryTime[node] and parent!=-1:
+                articulationPoints.add(node)
+            child+=1
+        else:
+            lowestTime[node]=min(lowestTime[node],discoveryTime[dost])
+    if child>=2 and parent!=-1:
+        articulationPoint(node)
+def findArticulationPoints(edges,numVertices,numEdges):
+    graph=dict()
+    discoveryTime=[0]*numVertices
+    lowestTime=[0]*numVertices
+    articulationPoints=set()
+    for i in numVertices:
+        graph[i]=list()
+    for edge in edges:
+        u,v=edge
+        graph[u].append(v)
+        graph[v].append(u)
+    visited=[0 for i in range(numVertices)]
+    for i in range(numVertices):
+        if visited[i] is not 1:
+            dfs(i,-1,visited,discoveryTime,lowestTime,articulationPoints,graph,0)
+    return articulationPoints
+if __name__=="__main__":
+    numVertices=int(input())
+    numEdges=int(input())
+    edges=[]
+    for _ in range(numsEdges):
+        u,v=tuple(map(int,input().split()))
+        edges.append([u,v])
+    ans=findArticulationPoints(edges,numVertices,numEdges)
+    print(ans)
