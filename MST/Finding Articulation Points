@@ -1,7 +1,7 @@
 def dfs(node,parent,visited,discoveryTime,lowestTime,articulationPoints,graph,timer):
     visited[node]=1
     discoveryTime=timer
-    lowestTime=timer
+    lowestTime=timer 
     timer+=1
     child=0
     for dost in graph[node]:
