@@ -1,0 +1,25 @@
+def dfs(node,parent,visited):
+    visited[node]=1
+    for dost in graph[node]:
+        if visited[dost]!=1:
+            dfs(dost,node,visited)
+        elif dost!=parent:
+            print(node,"--->",dost)
+def printBackedges(edges,numVertices,numEdges):
+    graph=dict()
+    for i in numVertices:
+        graph[i]=list()
+    for edge in edges:
+        u,v=edge
+        graph[u].append(v)
+        graph[v].append(u)
+    visited=[0 for i in range(numVertices)]
+    dfs(0,-1,visited)
+if __name__=="__main__":
+    numVertices=int(input())
+    numEdges=int(input())
+    edges=[]
+    for _ in range(numsEdges):
+        u,v=tuple(map(int,input().split()))
+        edges.append([u,v])
+    printBackedges(edges,numVertices,numEdges)
