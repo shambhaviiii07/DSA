@@ -22,6 +22,27 @@ for node in edges:
             break
 else:
     print('no Cycle')
+ 
+ 
+ 
+ Problem Link--->https://leetcode.com/problems/redundant-connection/
+class Solution:
+    def findRedundantConnection(self, edges):
+        graph = collections.defaultdict(set)
+        def dfs(visited,src,target):
+            if src not in visited:
+                visited.add(src)
+                if src==target:
+                    return True
+                for dost in graph[src]:
+                    if dfs(visited,dost,target):
+                        return True
+        for i,j in edges:
+            visited=set()            
+            if i in graph and j in graph and dfs(visited,i,j):
+                return [i,j]
+            graph[i].add(j)
+            graph[j].add(i)
     
 #DFS to detect a cycle in Directed Graph
 '''def dfs(node):
