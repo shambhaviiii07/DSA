@@ -1,0 +1,29 @@
+Problem Statement---> a banglore office and pune office costs on daily basis is given and the cost of switching between the office is given find the minimum cost .
+
+b=[5,8,3,9,7,12,4]
+p=[6,13,4,8,2,5,10]
+n=len(b)
+dp=[0]*(n+1)
+m=5
+flag=False
+if p[0]<b[0]:
+    flag=True
+for i in range(1,n+1):
+    if flag:
+        dp[i]=dp[i-1]+min(p[i-1],m+b[i-1])
+        if b[i-1]+m<p[i-1]:
+            flag=False
+        elif b[i-1]+m==p[i-1]:
+            if i<n and b[i]<p[i]:
+                flag=False
+    else:
+        dp[i]=dp[i-1]+min(p[i-1]+m,b[i-1])
+        if b[i-1]>p[i-1]+m:
+            flag=True
+        elif b[i-1]==p[i-1]+m:
+            if i<n and p[i]<b[i]:
+                flag=True
+print(dp)
+print(dp[-1])   #Answer
+            
+            
