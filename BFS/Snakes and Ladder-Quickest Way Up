@@ -1,0 +1,77 @@
+Problem Link--->https://www.hackerrank.com/challenges/the-quickest-way-up/problem?isFullScreen=true
+
+
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'quickestWayUp' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. 2D_INTEGER_ARRAY ladders
+#  2. 2D_INTEGER_ARRAY snakes
+#
+from collections import deque
+def quickestWayUp(ladders, snakes):
+    # Write your code here
+    count=0
+    ladderSet={i:j for i,j in ladders}
+    snakeSet={i:j for i,j in snakes}
+    queue=deque()
+    queue.append(1)
+    visited=set()
+    while queue:
+        length=len(queue)
+        count+=1
+        for l in range(length):
+            pos=queue.popleft()
+            if pos==100:
+                return count-1
+            
+            for i in range(1,7):
+                newPos=pos+i
+                if newPos <101:
+                    if newPos not in ladderSet and newPos not in snakeSet and newPos not in visited:
+                        queue.append(newPos)
+                        visited.add(newPos)
+                    elif newPos in ladderSet:
+                        if ladderSet[newPos] not in visited:
+                            queue.append(ladderSet[newPos])
+                            visited.add(ladderSet[newPos])
+                    elif newPos in snakeSet:
+                        if snakeSet[newPos] not in visited:
+                            queue.append(snakeSet[newPos])
+                            visited.add(snakeSet[newPos])
+                                
+    return -1            
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+
+    t = int(input().strip())
+
+    for t_itr in range(t):
+        n = int(input().strip())
+
+        ladders = []
+
+        for _ in range(n):
+            ladders.append(list(map(int, input().rstrip().split())))
+
+        m = int(input().strip())
+
+        snakes = []
+
+        for _ in range(m):
+            snakes.append(list(map(int, input().rstrip().split())))
+
+        result = quickestWayUp(ladders, snakes)
+
+        fptr.write(str(result) + '\n')
+
+    fptr.close()
