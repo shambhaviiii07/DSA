@@ -1,0 +1,52 @@
+Problem Statement--->Reach from one start string to the destination string in a minimum number of steps provided some set of intermediate strings cannot be reached. 
+The string consists of numbers starting from 0 to 9 and it works like a suitcase lock where from 0 there can be two options 1 or 9, similarly, from 1 we can go to 2 
+or 0. 
+
+Hint: Use BFS constructing graphs of strings.
+
+Example: 
+
+Input : 
+Source = 123
+Destination = 456
+steps = 9
+
+
+
+from collections import deque 
+Source = "123"
+Destination = "456"
+d={i:[] for i in range(10)}
+for i in range(10):
+    if i==0:
+        d[i]=[1,9]
+    elif i==9:
+        d[i]=[0,8]
+    else:
+        d[i]=[i-1,i+1]
+if Source==Destination:
+    print(0)
+else:
+    count=0
+    for i in range(len(Source)):
+        if Source[i]!=Destination[i]:
+            c=0
+            queue=deque()
+            visited=set()
+            flag=True
+            queue.append(int(Source[i]))
+            visited.add(int(Source[i]))
+            while queue and flag:
+                length=len(queue)
+                c+=1
+                for _ in range(length):
+                    t=queue.popleft()
+                    if t==int(Destination[i]):
+                        count+=c
+                        flag=False
+                        break
+                    for j in d[t]:
+                        if j not in visited :
+                            queue.append(j)
+                            visited.add(j)
+    print(count-len(Source))
