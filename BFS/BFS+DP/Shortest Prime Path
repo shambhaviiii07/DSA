@@ -1,0 +1,40 @@
+from collections import *
+class Solution:
+    def __init__(self):
+        self.prime=[1 for i in range(10001)]
+        self.prime[1]=0
+        for i in range(2,10000):
+            if self.prime[i]==1:
+                j=2
+                while j*i<=9999:
+                    self.prime[j*i]=0
+                    j+=1
+    def bfs(self,source,destination):
+        dp=[-1 for i in range(10001)]
+        visited=[0 for i in range(10001)]
+        queue=deque()
+        queue.append(source)
+        dp[source]=0
+        while queue:
+            current=queue.popleft()
+            if visited[current]==1:
+                continue
+            s=str(current)
+            visited[current]=1
+            for i in range(4):
+                for j in range(10):
+                    c=chr(j+48)
+                    if c==s[i] or (c=='0' and i==0):
+                        continue
+                    nxt=s[:i]+c+s[i+1:]
+                    nxt=int(nxt)
+                    if self.prime[nxt]==1 and dp[nxt]==-1:
+                        dp[nxt]=1+dp[current]
+                        queue.append(nxt)
+                    if dp[destination]!=-1:
+                        return dp[destination]
+        
+            
+    def solve (self,Num1,Num2):
+        #code here
+        return self.bfs(Num1,Num2)
