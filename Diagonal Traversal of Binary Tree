@@ -1,0 +1,23 @@
+Problem Link--->https://practice.geeksforgeeks.org/problems/diagonal-traversal-of-binary-tree/1#
+
+from collections import *
+
+class Solution:
+    def diagonal(self,root):
+        #:param root: root of the given tree.
+        #return: print out the diagonal traversal,  no need to print new line
+        #code here
+        queue=deque()
+        l=[]
+        queue.append(root)
+        while queue:
+            node=queue.popleft()
+            l.append(node.data)
+            if node.left:
+                queue.append(node.left)
+            while node.right:
+                node=node.right
+                l.append(node.data)
+                if node.left:
+                    queue.append(node.left)
+        return l
