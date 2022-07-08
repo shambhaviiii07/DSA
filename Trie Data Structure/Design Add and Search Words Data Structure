@@ -1,0 +1,33 @@
+Problem Link--->https://leetcode.com/problems/design-add-and-search-words-data-structure/
+
+class TrieNode:
+    def __init__(self):
+        self.children={}
+        self.wordEnd=False
+class WordDictionary:
+    def __init__(self):
+        self.root=TrieNode()
+    def addWord(self, word: str) -> None:
+        curr=self.root
+        for i in word:
+            if i not in curr.children:
+                curr.children[i]=TrieNode()
+            curr=curr.children[i]
+        curr.wordEnd=True
+    def searchRecur(self,word,curr,i):
+        if i==len(word):
+            return curr.wordEnd
+        if word[i]=='.':
+            for j in curr.children:
+                if self.searchRecur(word,curr.children[j],i+1):
+                    return True
+        if word[i] in curr.children:
+            return self.searchRecur(word,curr.children[word[i]],i+1)
+        return False
+        
+    def search(self, word: str) -> bool:
+        return self.searchRecur(word,self.root,0)
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
