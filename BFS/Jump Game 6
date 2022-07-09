@@ -1,0 +1,41 @@
+Problem Link--->https://leetcode.com/problems/jump-game-vi/
+
+class Solution:
+    def maxResult(self, nums: List[int], k: int) -> int:
+        maxHeap=[]
+        heappush(maxHeap,[-nums[0],0])
+        for i in range(1,len(nums)):
+            while maxHeap and maxHeap[0][1]<i-k:
+                heappop(maxHeap)
+            cost=0
+            if maxHeap:
+                cost=-maxHeap[0][0]+nums[i]
+            heappush(maxHeap,[-cost,i])
+        while maxHeap:
+            val,idx=heappop(maxHeap)
+            val=-val
+            if idx==len(nums)-1:
+                return val
+            
+#         dp=[0 for i in range(len(nums))]
+#         dp[0]=nums[0]
+#         for i in range(1,len(nums)):
+#             t=-math.inf
+#             for x in range(i-1,i-k-1,-1):
+#                 if x>-1:
+#                     t=max(t,nums[i]+dp[x])
+#             dp[i]=t
+#         return dp[-1]
+        
+       # TIME LIMIT EXCEEDED :')
+       #  def solve(i,s):
+       #      nonlocal l
+       #      if i==len(nums)-1:
+       #          l=max(l,s)
+       #          return
+       #      for j in range(1,1+k):
+       #          if i+j<=len(nums)-1:
+       #              solve(i+j,s+nums[i+j])
+       #  l=-math.inf
+       #  solve(0,nums[0])
+       #  return l
