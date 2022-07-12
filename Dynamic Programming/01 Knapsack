@@ -1,1 +1,20 @@
+Problem Link--->https://practice.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1/?page=1&company[]=Morgan%20Stanley&sortBy=submissions#
 
+
+class Solution:
+    def memoization(self,W, wt, val, n):
+        if n==0 or W==0:
+            return 0
+        if self.dp[n][W]!=-1:
+            return self.dp[n][W]
+        if wt[n-1]<=W:
+            self.dp[n][W]=max(val[n-1]+self.memoization(W-wt[n-1], wt, val, n-1),self.memoization(W,wt,val,n-1))
+            return self.dp[n][W]
+        if wt[n-1]>W:
+            self.dp[n][W]=self.memoization(W,wt,val,n-1)
+            return self.dp[n][W]
+    #Function to return max value that can be put in knapsack of capacity W.
+    def knapSack(self,W, wt, val, n):
+        self.dp=[[-1 for j in range(W+1)]for i in range(n+1)]
+        self.memoization(W, wt, val, n)
+        return self.dp[-1][-1]
