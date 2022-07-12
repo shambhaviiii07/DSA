@@ -1,0 +1,44 @@
+Problem Link--->https://leetcode.com/problems/word-break/
+
+class TrieNode:
+    def __init__(self):
+        self.child=[None]*26
+        self.wordEnd=0
+class Trie:
+    trieRoot=None
+    def __init__(self):
+        Trie.trieRoot=TrieNode()
+    def insert(self,word):
+        curr=Trie.trieRoot
+        for i in word:
+            index=ord(i)-ord('a')
+            if curr.child[index] is None:
+                curr.child[index]=TrieNode()
+            curr=curr.child[index]
+        curr.wordEnd=1
+    def search(self,word):
+        curr=self.trieRoot
+        for i in word:
+            index=ord(i)-ord('a')
+            if curr.child[index] is None:
+                return False
+            curr=curr.child[index]
+        if curr.wordEnd==1:
+            return True
+        else:
+            return False
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        trie=Trie()
+        for i in wordDict:
+            trie.insert(i)
+        dp = [False for _ in range(len(s)+1)]
+        dp[0] = True
+
+        for i in range(1, len(s)+1):
+            for j in range(i):
+                if dp[j] and trie.search(s[j:i]):
+                    dp[i] = True
+                    break
+
+        return dp[-1]
