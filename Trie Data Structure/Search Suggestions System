@@ -1,0 +1,34 @@
+Problem Link--->https://leetcode.com/problems/search-suggestions-system/
+
+class TrieNode:
+    def __init__(self):
+        self.children=dict()
+        self.words=list()
+class Trie:
+    def __init__(self):
+        self.root=TrieNode()
+    def insertWord(self,word):
+        curr=self.root
+        for i in word:
+            if i not in curr.children:
+                curr.children[i]=TrieNode()
+            curr=curr.children[i]
+            curr.words.append(word)
+    def search(self,word):
+        curr=self.root
+        for i in word:
+            if i not in curr.children:
+                return []
+            curr=curr.children[i]
+        return curr.words
+        
+class Solution:
+    def suggestedProducts(self, products: List[str], searchWord: str) -> List[List[str]]:
+        obj=Trie()
+        for i in products:
+            obj.insertWord(i)
+        res = []
+        for i in range(len(searchWord)):
+            tmp = obj.search(searchWord[:i+1])
+            res.append(sorted(tmp)[:3])
+        return res
