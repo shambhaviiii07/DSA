@@ -1,0 +1,45 @@
+Problem Link--->https://www.interviewbit.com/problems/burn-a-tree/
+
+# Definition for a  binary tree node
+# class TreeNode:
+#    def __init__(self, x):
+#        self.val = x
+#        self.left = None
+#        self.right = None
+from collections import *
+class Solution:
+    def solve(self, root, target):
+        parentDict={}
+        queue=deque()
+        queue.append([root,None])
+        targetNode=None
+        while queue:
+            node,parent=queue.popleft()
+            parentDict[node]=parent
+            if node.val==target:
+                targetNode=node
+            if node.left:
+                queue.append([node.left,node])
+            if node.right:
+                queue.append([node.right,node])
+        time=0
+        visited=set()
+        queue=deque()
+        queue.append(targetNode)
+        if targetNode is not None:
+            while queue:
+                time+=1
+                length=len(queue)
+                for _ in range(length):
+                    node=queue.popleft()
+                    if node in parentDict:
+                        if parentDict[node]!=None and parentDict[node] not in visited:
+                            queue.append(parentDict[node])
+                            visited.add(parentDict[node])
+                    if node.left and node.left not in visited:
+                        queue.append(node.left)
+                        visited.add(node.left)
+                    if node.right and node.right not in visited:
+                        queue.append(node.right)
+                        visited.add(node.right)
+        return time-1
