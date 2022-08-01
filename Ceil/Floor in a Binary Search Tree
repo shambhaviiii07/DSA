@@ -1,0 +1,50 @@
+class TreeNode:
+    def __init__(self,data):
+        self.val=data
+        self.left=self.right=None
+class Solution:
+    def findCiel(self,root,x):
+        ans=-1
+        def solve(node):
+            nonlocal ans
+            if not node:
+                return
+            if node.val==x:
+                ans=node.val
+                return
+            if node.val<x:
+                solve(node.right)
+            if node.val>x:
+                ans=node.val
+                solve(node.left)
+        solve(root)
+        return ans
+    def findFloor(self,root,x):
+        ans=-1
+        def solve(node):
+            nonlocal ans
+            if not node:
+                return 
+            if node.val==x:
+                ans=x
+                return
+            if node.val<x:
+                ans=node.val
+                solve(node.right)
+            if node.val>x:
+                solve(node.left)
+        solve(root)
+        return ans
+obj=Solution()
+root=TreeNode(8)
+root.left=TreeNode(3)
+root.right=TreeNode(10)
+root.left.left=TreeNode(1)
+root.left.right=TreeNode(6)
+root.left.right.left=TreeNode(4)
+root.left.right.right=TreeNode(7)
+root.right.right=TreeNode(14)
+root.right.right.left=TreeNode(13)
+x=int(input('Enter TreeNode value'))
+print(obj.findCiel(root,x))
+print(obj.findFloor(root,x))
