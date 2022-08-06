@@ -45,28 +45,32 @@ class Solution:
             graph[j].add(i)
     
 #DFS to detect a cycle in Directed Graph
-'''def dfs(node):
-    if d[node]==[]:
-        return True
-    if node in visitSet:
-        return False
-    visitSet.add(node)
-    for dost in d[node]:
-        if not dfs(dost):
-            return False
-    visitSet.remove(node)
-    d[node]=[]
-    return True
+Problem Link--->https://www.interviewbit.com/problems/cycle-in-directed-graph/
+import sys
 
-n=5
-edges=[[1,4],[2,4],[3,1],[3,2]]
-d={i:[] for i in range(n)}
-for frm,to in edges:
-    d[frm].append(to)
-visitSet=set()
-for node in range(n):
-    if not dfs(node):
-        print('Cycle')
-print('No cycle')
-
-'''
+sys.setrecursionlimit(10**6)
+class Solution:
+    # @param A : integer
+    # @param B : list of list of integers
+    # @return an integer
+    def solve(self, n, edges):
+        def dfs(node):
+            if d[node]==[]:
+                return True
+            if node in visitSet:
+                return False
+            visitSet.add(node)
+            for dost in d[node]:
+                if not dfs(dost):
+                    return False
+            visitSet.remove(node)
+            # d[node]=[]
+            return True
+        d={i:[] for i in range(1,1+n)}
+        for frm,to in edges:
+            d[frm].append(to)
+        visitSet=set()
+        for node in range(1,1+n):
+            if not dfs(node):
+                return 1
+        return 0
