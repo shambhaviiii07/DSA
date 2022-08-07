@@ -1,0 +1,30 @@
+Problem Link--->https://www.interviewbit.com/problems/cycle-in-undirected-graph/
+
+from collections import *
+class Solution:
+    # @param A : integer
+    # @param B : list of list of integers
+    # @return an integer
+    def solve(self, A, B):
+        queue=deque()
+        graph={i:[] for i in range(1,A+1)}
+        for i,j in B:
+            graph[i].append(j)
+            graph[j].append(i)
+        visited=set()
+        for i in range(1,A+1):
+            if i not in visited:
+                visited.add(i)
+                queue.append([i,-1])
+                while queue:
+                    l=len(queue)
+                    for _ in range(l):
+                        node,prev=queue.popleft()
+                        for dost in graph[node]:
+                            if dost!=prev:
+                                if dost not in visited:
+                                    queue.append([dost,node])
+                                    visited.add(dost)
+                                else:
+                                    return 1
+        return 0
