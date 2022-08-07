@@ -1,0 +1,24 @@
+Problem Link--->https://practice.geeksforgeeks.org/problems/topological-sort/1
+
+class Solution:
+    
+    #Function to return list containing vertices in Topological order.
+    def topoSort(self, V, adj):
+    // DFS to find TOPOLOGICAL SORT
+        // stack=[]
+        // visited=set()
+        // ans=[]
+        // # Code here
+        // def dfs(node):
+        //     visited.add(node)
+        //     for i in adj[node]:
+        //         if i not in visited:
+        //             dfs(node)
+        //     stack.append(node)
+        // for i in range(V):
+        //     if i not in visited:
+        //         dfs(i)
+        // while stack:
+        //     t=stack.pop()
+        //     ans.append(t)
+        // return ans
