@@ -1,0 +1,103 @@
+Problem Link--->https://www.lintcode.com/problem/595/description
+
+Brute Force
+Time Complexity - O(n^2) 
+
+
+from collections import *
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the length of the longest consecutive sequence path
+    """
+    def solve(self,root):
+        if not root:return 0
+        l,r=0,0
+        if root.left and root.val+1==root.left.val:
+            l=self.solve(root.left)
+        if root.right and root.val+1==root.right.val:
+            r=self.solve(root.right)
+        return max(l,r)+1
+    def longest_consecutive(self, root: TreeNode) -> int:
+        # write your code here
+        queue=deque()
+        queue.append(root)
+        maximum=0
+        while queue:
+            t=queue.popleft()
+            maximum=max(maximum,self.solve(t))
+            if t.left:
+                queue.append(t.left)
+            if t.right:
+                queue.append(t.right)
+        return maximum
+
+
+
+DP for the above approach
+
+from collections import *
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the length of the longest consecutive sequence path
+    """
+    def __init__(self):
+        self.dp=dict()
+    def solve(self,root):
+        if root in self.dp:
+            return self.dp[root]
+        if not root:
+            self.dp[root]=0
+            return 0
+        
+        l,r=0,0
+        if root.left and root.val+1==root.left.val:
+            l=self.solve(root.left)
+        if root.right and root.val+1==root.right.val:
+            r=self.solve(root.right)
+        self.dp[root] = max(l,r)+1
+        return self.dp[root]
+    def longest_consecutive(self, root: TreeNode) -> int:
+        # write your code here
+        
+        queue=deque()
+        queue.append(root)
+        maximum=0
+        while queue:
+            t=queue.popleft()
+            maximum=max(maximum,self.solve(t))
+            if t.left:
+                queue.append(t.left)
+            if t.right:
+                queue.append(t.right)
+        return maximum
+
+
+Piggybacking Approach 
+(This is an approach in which we make use of previously computed answers for finding out further results)
+Time Complexity - O(n)
+
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the length of the longest consecutive sequence path
+    """
+    def longest_consecutive(self, root: TreeNode) -> int:
+        # write your code here
+        self.maxLength=1
+        def recursive(node,length):
+            if node.left:
+                if node.left.val-1==node.val:
+                    self.maxLength=max(self.maxLength,length+1)
+                    recursive(node.left,length+1)
+                else:
+                    recursive(node.left, 1)
+            if node.right:
+                if node.right.val-1==node.val:
+                    self.maxLength=max(self.maxLength,length+1)
+                    recursive(node.right, 1+length)
+                else:
+                    recursive(node.right,1)
+        recursive(root, 1)
+        return self.maxLength
