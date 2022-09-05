@@ -1,0 +1,38 @@
+Problem Link--->https://www.lintcode.com/problem/595/?utm_source=%5B%27sc-bky-sz-20Dec%27%5D
+
+from collections import *
+class Solution:
+    """
+    @param root: the root of binary tree
+    @return: the length of the longest consecutive sequence path
+    """
+    def __init__(self):
+        self.dp=dict()
+    def solve(self,root):
+        if root in self.dp:
+            return self.dp[root]
+        if not root:
+            self.dp[root]=0
+            return 0
+        
+        l,r=0,0
+        if root.left and root.val+1==root.left.val:
+            l=self.solve(root.left)
+        if root.right and root.val+1==root.right.val:
+            r=self.solve(root.right)
+        self.dp[root] = max(l,r)+1
+        return self.dp[root]
+    def longest_consecutive(self, root: TreeNode) -> int:
+        # write your code here
+        
+        queue=deque()
+        queue.append(root)
+        maximum=0
+        while queue:
+            t=queue.popleft()
+            maximum=max(maximum,self.solve(t))
+            if t.left:
+                queue.append(t.left)
+            if t.right:
+                queue.append(t.right)
+        return maximum
