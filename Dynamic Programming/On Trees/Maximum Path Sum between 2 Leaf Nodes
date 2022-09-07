@@ -1,5 +1,6 @@
 Problem Link--->https://practice.geeksforgeeks.org/problems/maximum-path-sum/1?page=1&company[]=Amazon&category[]=Tree&curated[]=1&sortBy=submissions
 
+#same leaf node ->possible
 class Solution:        
     def maxPathSum(self, root):
         # code here
@@ -16,3 +17,32 @@ class Solution:
         res=-math.inf
         MaximumPathSumbetween2LeafNodes(root)
         return res
+
+
+#same leaf node ->not possible
+
+class Solution:        
+    def maxPathSum(self, root):
+        # code here
+        def solve(node):
+            nonlocal s
+            if not node:
+                return 0
+            if not node.left and not node.right:
+                return node.data
+            l=solve(node.left)
+            r=solve(node.right)
+            if node.left and node.right:
+                temp=max(l,r)+node.data
+                s=max(s,l+r+node.data)
+                return temp
+            if not node.left:
+                temp= r+node.data
+            else:
+                temp= l+node.data
+            return temp
+        s=-math.inf
+        res=solve(root)
+        if root.left and root.right:
+            return s
+        return max(s,res)
