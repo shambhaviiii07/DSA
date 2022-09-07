@@ -1,0 +1,22 @@
+Problem Link--->https://leetcode.com/problems/maximum-depth-of-binary-tree/
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        def solve(node):
+            nonlocal res
+            if not node:
+                return 0
+            l=solve(node.left)
+            r=solve(node.right)
+            temp=max(l,r)+1
+            res=max(temp,res)
+            return temp
+        res=-math.inf
+        solve(root)
+        return res if res!=-math.inf else 0
