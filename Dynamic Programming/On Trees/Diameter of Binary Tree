@@ -1,0 +1,12 @@
+def solve(node):
+  if not node:
+    return 0
+  l=solve(node.left)
+  r=solve(node.right)
+  temp=max(r,l)+1
+  ans=max(temp,l+r+1)
+  res=max(res,ans)
+  return temp
+res=-math.inf
+solve(root)
+return res
