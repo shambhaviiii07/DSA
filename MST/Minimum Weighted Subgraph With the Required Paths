@@ -1,0 +1,36 @@
+Problem Link--->https://leetcode.com/problems/minimum-weighted-subgraph-with-the-required-paths/
+
+class Solution:
+    def buildGraph(self,n,edges,src):
+        graph={i:list() for i in range(n)}
+        if src:
+            for i,j,val in edges:
+                graph[i].append([j,val])
+        else:
+            for i,j,val in edges:
+                graph[j].append([i,val])
+        return graph
+    def Dijkstra(self,n,graph,src):
+        visited=[False for i in range(n)]
+        minHeap=[]
+        heappush(minHeap,[0,src])
+        distance=[math.inf for i in range(n)]
+        distance[src]=0
+        while minHeap:
+            currWt,currNode=heappop(minHeap)
+            visited[currNode]=True
+            for dost,val in graph[currNode]:
+                if visited[dost]==False and currWt+val<distance[dost]:
+                    heappush(minHeap,[currWt+val,dost])
+                    distance[dost]=currWt+val
+        return distance
+    def minimumWeight(self, n: int, edges: List[List[int]], src1: int, src2: int, dest: int) -> int:
+        srcGraph=self.buildGraph(n,edges,True)
+        destGraph=self.buildGraph(n,edges,False)
+        src1Dijkstra=self.Dijkstra(n,srcGraph,src1)
+        src2Dijkstra=self.Dijkstra(n,srcGraph,src2)
+        destDijkstra=self.Dijkstra(n,destGraph,dest)
+        minimum=math.inf
+        for i in range(n):
+            minimum=min(minimum,src1Dijkstra[i]+src2Dijkstra[i]+destDijkstra[i])
+        return minimum if minimum!=math.inf else -1
