@@ -1,0 +1,8 @@
+Recursion is Bottom Up (ALWAYS)
+Tabulation is always opposite of Recursion 
+Tabulation is Top Down
+
+Try to represent the problem in the form of index
+Do all possible stuff on the index as per the problem statement
+We know the problem can be solved using Dynamic Programming if the problem statement states that we need to find 
+the minimum/maximum [Minimum of stuffs], number of ways [Sum of all stuffs].
