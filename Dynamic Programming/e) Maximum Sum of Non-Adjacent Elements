@@ -1,0 +1,67 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/maximum-sum-of-non-adjacent-elements_843261?leftPanelTab=0
+
+RECURSION
+
+TC-O(2^N)
+SC-O(N)
+
+def maximumNonAdjacentSum(nums):    
+    def solve(i):
+        if i<0:
+            return 0
+        left=arr[i]+solve(i-2)
+        right=solve(i-1)
+        return max(left,right)
+    return solve(len(nums)-1)
+    
+MEMOIZATION
+
+TC-O(N)
+SC-O(N)+O(N)
+
+def maximumNonAdjacentSum(nums):
+    dp=[-1 for _ in range(len(nums))]
+    def solve(i):
+        if i<0:
+            return 0
+        if dp[i]!=-1:
+            return dp[i]
+        left=solve(i-2)+nums[i]
+        right=solve(i-1)
+        dp[i]=max(left,right)
+        return dp[i]
+    return solve(len(nums)-1)
+
+TABULATION
+
+TC-O(N)
+SC-O(N)
+
+dp=[0 for i in range(len(nums))]
+dp[0]=nums[0]
+for i in range(1,len(nums)):
+    left=nums[i]
+    if i>1:
+        left+=dp[i-2]
+    right=dp[i-1]
+    dp[i]=min(left,right)
+return dp[len(nums)-1]
+    
+
+
+SPACE OPTIMIZATION
+
+TC-O(N)
+SC-O(1)
+
+prev1=nums[0]
+prev2=0
+for i in range(1,len(nums)):
+    left=nums[i]
+    if i>1:
+        left+=prev2
+    right=prev1
+    curr=max(left,right)
+    prev2=prev1
+    prev1=curr
+return prev1
