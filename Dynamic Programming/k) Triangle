@@ -1,0 +1,30 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/triangle_1229398?leftPanelTab=1
+
+Recursion
+
+TC-O(2^(1+2+3+4...n))
+SC-O(n)
+
+def minimumPathSum(triangle, n):
+    def solve(i,j):
+        if i==n-1:
+            return triangle[i][j]
+        down=triangle[i][j]+solve(i+1,j)
+        diagonal=triangle[i][j]+solve(i+1,j+1)
+        return min(down,diagonal)
+    return solve(0,0)
+
+Memoization
+
+def minimumPathSum(triangle, n):
+    dp={}
+    def solve(i,j):
+        if i==n-1:
+            return triangle[i][j]
+        if (i,j) in dp:
+            return dp[(i,j)]
+        down=triangle[i][j]+solve(i+1,j)
+        diagonal=triangle[i][j]+solve(i+1,j+1)
+        dp[(i,j)]= min(diagonal,down)
+        return dp[(i,j)]
+    return solve(0,0)
