@@ -1,0 +1,41 @@
+import math
+def frogJump(n: int, heights: List[int],k:int) -> int:
+    dp=[-1 for _ in range(len(heights))]
+    dp[0]=0
+    for i in range(1,len(heights)):
+        minJump=math.inf
+        for j in range(1,k+1):
+            if i-j>=0:
+                jump=dp[i-j]+abs(heights[i-j]-heights[i])
+                minJump=min(minJump,jump)
+        dp[i]=minJump
+    return dp[len(heights)-1]
+    
+    
+    
+    dp=[-1 for i in range(len(heights))]
+    def solve(i):
+        if i==0:
+            return 0
+        if dp[i]!=-1:
+            return dp[i]
+        minJump=math.inf
+        for j in range(1,k+1):
+            if i-j>=0:
+                jump=solve(i-j)+abs(heights[i-j]-heights[i])
+                minJump=min(minJump,jump)
+        dp[i]=minJump
+        return dp[i]
+    return solve(len(heights)-1)
+    
+    
+    def solve(i):
+        if i==0:
+            return 0
+        minJump=math.inf
+        for j in range(1,k+1):
+            if i-j>=0:
+                jump=solve(i-j)+abs(heights[i-j]-heights[i])
+                minJump=min(minJump,jump)
+        return minJump
+    return solve(len(heights)-1)
