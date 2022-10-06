@@ -31,6 +31,10 @@ TABULATION
     
 MEMOIZATION
 
+TC-O(N*M)
+SC-O(N*M)+O(N)
+
+
     dp=[[-1 for j in range(len(matrix[0]))]for i in range(len(matrix))]
     def solve(i,j):
         if j not in range(len(matrix[0])) :
@@ -50,6 +54,9 @@ MEMOIZATION
     return maximum
 
 RECURSION
+
+TC-O(3^N)
+sc-O(N)
 
     def solve(i,j):
         if j not in range(len(matrix[0])) :
