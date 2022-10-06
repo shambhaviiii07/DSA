@@ -1,0 +1,64 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/partition-equal-subset-sum_892980
+class Solution:
+    def subsetSumEqualToK(self,i,target,nums,dp):
+        if target==0:
+            return True
+        if i==0:
+            dp[i][target]=nums[i]==target 
+            return dp[i][target]
+        if dp[i][target]!=-1:
+            return dp[i][target]
+        notTake=self.subsetSumEqualToK(i-1,target,nums,dp)
+        take=False
+        if target>=nums[i]:
+            take=self.subsetSumEqualToK(i-1,target-nums[i],nums,dp)
+        dp[i][target]=take or notTake
+        return dp[i][target]
+    def subsetSumEqualToK(self,n, k, arr):
+          dp=[[-1 for j in range(k+1)]for i in range(n)]
+          def solve(i,target):
+              if target==0:
+                  return True
+              if i==0:
+                  return arr[0]==target
+              if dp[i][target]!=-1:
+                  return dp[i][target]
+              notTake=solve(i-1,target)
+              take=False
+              if arr[i]<=target:
+                  take=solve(i-1,target-arr[i])
+              dp[i][target]= take or notTake
+              return dp[i][target]
+          return solve(n-1,k)
+        
+    def canPartition(self, nums: List[int]) -> bool:
+        totalSum=sum(nums)
+        if totalSum%2:
+            return False
+        
+# Space Optimization
+ 
+        return self.subsetSumEqualToK(len(nums),totalSum//2,nums)
+
+        
+# Tabulation
+
+        dp=[[False for j in range((totalSum//2)+1)]for i in range(len(nums))]
+        for i in range(len(nums)):
+            dp[i][0]=True 
+        for i in range(1,len(nums)):
+            for j in range((totalSum//2)+1):
+                if i==0:
+                    dp[i][j]=nums[i]==j
+                else:
+                    notTake=dp[i-1][j]
+                    take=False
+                    if j>=nums[i]:
+                        take=dp[i-1][j-nums[i]]
+                    dp[i][j]=take or notTake
+        return dp[len(nums)-1][totalSum//2]
+
+# Memoization
+
+        dp=[[-1 for j in range((totalSum//2)+1)]for i in range(len(nums))]
+        return self.subsetSumEqualToK(len(nums)-1,totalSum//2,nums,dp)
