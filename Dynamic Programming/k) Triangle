@@ -28,3 +28,29 @@ def minimumPathSum(triangle, n):
         dp[(i,j)]= min(diagonal,down)
         return dp[(i,j)]
     return solve(0,0)
+    
+Tabulation
+    
+def minimumPathSum(triangle, n):
+    dp=[[-1 for i in range(n)]for j in range(n)]
+    for i in range(n-1,-1,-1):
+        dp[-1][i]=triangle[-1][i]
+    for i in range(n-2,-1,-1):
+        for j in range(i,-1,-1):
+            down=triangle[i][j]+dp[i+1][j]
+            diagonal=triangle[i][j]+dp[i+1][j+1]
+            dp[i][j]=min(diagonal,down)
+    return dp[0][0]
+    
+Space Optimization
+    
+    prev=[i for i in (triangle[-1])]
+    for i in range(n-2,-1,-1):
+        n-=1
+        curr=[-1 for _ in range(n)]
+        for j in range(i,-1,-1):
+            down=triangle[i][j]+prev[j]
+            diagonal=triangle[i][j]+prev[j+1]
+            curr[j]=min(down,diagonal)
+        prev=curr
+    return prev[0]
