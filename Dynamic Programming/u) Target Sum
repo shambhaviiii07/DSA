@@ -1,0 +1,40 @@
+Problem Link--->https://leetcode.com/problems/target-sum/description/
+
+class Solution:
+      def findTargetSumWays(self, nums: List[int], S: int) -> int:
+          memo = {}
+          def findSum(nums , s):
+              if (len(nums) , s) in memo:
+                  return memo[(len(nums) , s)]
+              if not nums:
+                  return 1 if not s else 0
+              result = findSum(nums[1 : ] , s + nums[0]) + findSum(nums[1 : ] , s - nums[0])
+              memo[(len(nums) , s)] = result
+              return result
+          return findSum(nums , S)
+
+
+      def countPartitions(n: int, d: int, arr: List[int]) -> int:         #r) Partition with given difference
+          def solve(i,sum):
+              if i==0:
+                  if sum==0 and arr[i]==0:
+                      return 2
+                  if sum==arr[i] or sum==0:
+                      return 1
+                  return 0
+              if dp[i][sum]!=-1:
+                  return dp[i][sum]
+              notTake=solve(i-1,sum)
+              take=0
+              if arr[i]<=sum:
+                  take=solve(i-1,sum-arr[i])
+              dp[i][sum]=(take + notTake)
+              return dp[i][sum]
+          totalSum=sum(arr)
+          if totalSum-d<0 or (totalSum-d)%2:
+              return 0
+          dp=[[-1 for j in range(((totalSum-d)//2)+1)]for i in range(n)]
+          return solve(n-1,(totalSum-d)//2)
+
+      def targetSum(arr: List[int], target: int) -> int:
+          return countPartitions(len(arr),target,arr)
