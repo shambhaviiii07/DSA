@@ -1,0 +1,51 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/partitions-with-given-difference_3751628?leftPanelTab=1
+
+Recursive
+
+def countPartitions(n: int, d: int, arr: List[int]) -> int:
+    def solve(i,sum):
+        if i==0:
+            if sum==0 and arr[i]==0:
+                return 2
+            if sum==arr[i] or sum==0:
+                return 1
+            return 0
+
+        notTake=solve(i-1,sum)
+        take=0
+        if arr[i]<=sum:
+            take=solve(i-1,sum-arr[i])
+        return (take+notTake)%mod
+
+    totalSum=sum(arr)
+    if totalSum-d<0 or (totalSum-d)%2:
+        return 0
+    mod=1000000007
+
+    return solve(n-1,(totalSum-d)//2)
+
+Memoization
+
+def countPartitions(n: int, d: int, arr: List[int]) -> int:
+    def solve(i,sum):
+        if i==0:
+            if sum==0 and arr[i]==0:
+                return 2
+            if sum==arr[i] or sum==0:
+                return 1
+            return 0
+         if dp[i][sum]!=-1:
+             return dp[i][sum]
+        notTake=solve(i-1,sum)
+        take=0
+        if arr[i]<=sum:
+            take=solve(i-1,sum-arr[i])
+        
+         dp[i][sum]=(take + notTake)%mod
+         return dp[i][sum]
+    totalSum=sum(arr)
+    if totalSum-d<0 or (totalSum-d)%2:
+        return 0
+    mod=1000000007
+    dp=[[-1 for j in range(((totalSum-d)//2)+1)]for i in range(n)]
+    return solve(n-1,(totalSum-d)//2)
