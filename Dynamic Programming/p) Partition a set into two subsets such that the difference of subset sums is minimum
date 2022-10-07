@@ -1,0 +1,56 @@
+Problem Link --- > https://www.codingninjas.com/codestudio/problems/partition-a-set-into-two-subsets-such-that-the-difference-of-subset-sums-is-minimum_842494?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1
+
+Memoization
+
+def minSubsetSumDifference(arr, n):
+    def solve(i,k):
+        if k==0:
+            dp[i][k]= True
+            return dp[i][k]
+        if i==0:
+            dp[i][k]= arr[i]==k
+            return dp[i][k]
+        if dp[i][k]!=-1:
+            return dp[i][k]
+        notTake=solve(i-1,k)
+        take=False
+        if arr[i]<=k:
+            take=solve(i-1,k-arr[i])
+        dp[i][k]=take or notTake
+        return dp[i][k]
+    totalSum=0
+    for i in arr:
+        totalSum+=i
+    dp=[[-1 for j in range(totalSum+1)]for i in range(n)]
+    for i in range(totalSum+1):
+        dummy=solve(n-1,i)
+    mini=math.inf
+    for i in range(totalSum+1):
+        if dp[n-1][i]:
+            diff=abs(i-(totalSum-i))
+            mini=min(diff,mini)
+    return mini
+
+
+Tabulation
+
+def minSubsetSumDifference(arr, n):
+        totalSum=sum(arr)
+        minimumDifference=math.inf
+        dp=[[False for j in range(totalSum+1)]for i in range(len(arr))]
+        for i in range(len(arr)):
+            dp[i][0]=True
+        for i in range(len(arr)):
+            for j in range(1,totalSum+1):
+                if i==0:
+                    dp[i][j]=(arr[i]==j)
+                else:
+                    notTake=dp[i-1][j]
+                    take=False
+                    if j>=arr[i]:
+                        take=dp[i-1][j-arr[i]]
+                    dp[i][j]=take or notTake
+        for j in range(totalSum+1):
+            if dp[-1][j] and dp[-1][totalSum-j]:
+                minimumDifference=min(minimumDifference,abs(j-(totalSum-j)))
+        return minimumDifference
