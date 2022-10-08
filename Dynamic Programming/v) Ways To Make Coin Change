@@ -1,0 +1,71 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/ways-to-make-coin-change_630471?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+SPACE OPTIMIZATION 
+
+def countWaysToMakeChange(denominations, value) :
+    prev=[0 for j in range(value+1)]
+    curr=[0 for j in range(value+1)]
+    for i in range(value+1):
+        if i%denominations[0]==0:
+            prev[i]=1
+    
+    for i in range(1,len(denominations)):
+        
+        for j in range(value+1):
+            notTake=prev[j]
+            take=0
+            if j>=denominations[i]:
+                take=curr[j-denominations[i]]
+            curr[j]=take+notTake
+        prev=curr
+    return prev[value]
+
+TABULATION
+
+    dp=[[0 for j in range(value+1)]for i in range(len(denominations))]
+    for i in range(len(denominations)):
+        dp[i][0]=1
+    for i in range(len(denominations)):
+        for j in range(value+1):
+            if i==0:
+                dp[i][j]=int(j%denominations[i]==0)
+            else:
+                notTake=dp[i-1][j]
+                take=0
+                if j>=denominations[i]:
+                    take=dp[i][j-denominations[i]]
+                dp[i][j]=take+notTake
+    return dp[len(denominations)-1][value]
+    
+MEMOIZATION
+    
+    dp=[[-1 for j in range(value+1)]for i in range(len(denominations))]
+    def solve(i,sum):
+        if sum==0:
+            return 1
+        if i==0:
+            return int(sum%denominations[i]==0)
+        if dp[i][sum]!=-1:
+            return dp[i][sum]
+        notTake=solve(i-1,sum)
+        take=0
+        if sum>=denominations[i]:
+            take=solve(i,sum-denominations[i])
+        dp[i][sum]= take+notTake
+        return dp[i][sum]
+    return solve(len(denominations)-1,value)
+
+
+RECURSION
+
+    def solve(i,sum):
+        if sum==0:
+            return 1
+        if i==0:
+            return int(sum%denominations[i]==0)
+        notTake=solve(i-1,sum)
+        take=0
+        if sum>=denominations[i]:
+            take=solve(i,sum-denominations[i])
+        return take+notTake
+    return solve(len(denominations)-1,value)
