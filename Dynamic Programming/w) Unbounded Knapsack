@@ -1,0 +1,70 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/unbounded-knapsack_1215029?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1
+
+import math
+def unboundedKnapsack(n, w, val, weight):
+
+    SPACE OPTIMIZATION
+
+    prev=[-math.inf for j in range(w+1)]
+    curr=[-math.inf for j in range(w+1)]
+    for i in range(n):
+        for j in range(w+1):
+            if i==0:
+                curr[j]=(j//weight[i])*val[i]
+            else:
+                notTake=prev[j]
+                take=-math.inf
+                if j>=weight[i]:
+                    take=curr[j-weight[i]]+val[i]
+                curr[j]=max(take,notTake)
+        prev=curr
+    return prev[w]
+    
+    TABULATION
+    
+    dp=[[-math.inf for j in range(w+1)]for i in range(n)]
+    for i in range(n):
+        for j in range(w+1):
+            if i==0:
+                dp[i][j]=(j//weight[i])*val[i]
+            else:
+                notTake=dp[i-1][j]
+                take=-math.inf
+                if j>=weight[i]:
+                    take=dp[i][j-weight[i]]+val[i]
+                dp[i][j]=max(take,notTake)
+    return dp[n-1][w]
+    
+    
+    MEMOIZATION
+    
+    dp=[[-1 for j in range(w+1)]for i in range(n)]
+    def solve(i,wei):
+        if i==0:
+            return (wei//weight[i])*val[i]
+        if dp[i][wei]!=-1:
+            return dp[i][wei]
+        notTake=solve(i-1,wei)
+        take=-math.inf
+        if wei>=weight[i]:
+            take=val[i]+solve(i,wei-weight[i])
+        dp[i][wei]= max(take,notTake)
+        return dp[i][wei]
+    return solve(n-1,w)
+            
+    RECURSION
+    
+    def solve(i,wei):
+        if i==0:
+            return (wei//weight[i])*val[i]
+        
+        notTake=solve(i-1,wei)
+        take=-math.inf
+        if wei>=weight[i]:
+            take=val[i]+solve(i,wei-weight[i])
+        return max(take,notTake)
+        
+    return solve(n-1,w)
+            
+            
+            
