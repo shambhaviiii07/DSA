@@ -1,0 +1,63 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/rod-cutting-problem_800284?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1
+
+import math
+def cutRod(price, n):
+
+SPACE OPTIMIZATION
+
+    prev=[-math.inf for j in range(n+1)]
+    curr=[-math.inf for j in range(n+1)]
+    for i in range(len(price)):
+        for j in range(n+1):
+            if i==0:
+                curr[j]=price[i]*j
+            else:   
+                notTake=prev[j]
+                take=-math.inf
+                rodLength=i+1
+                if rodLength<=j:
+                    take=curr[j-rodLength]+price[i]
+                curr[j]=max(take,notTake)
+        prev=curr
+    return prev[n]
+
+TABULATION
+
+    dp=[[-math.inf for j in range(n+1)]for i in range(len(price))]
+    for i in range(len(price)):
+        for j in range(n+1):
+            if i==0:
+                dp[i][j]=j*price[i]
+            else:
+                notTake=dp[i-1][j]
+                take=-math.inf
+                rodlength=i+1
+                if rodlength<=j:
+                    take=dp[i][j-rodlength]+price[i]
+                dp[i][j]=max(take,notTake)
+    return dp[len(price)-1][n]
+    
+    dp=[[-1 for j in range(n+1)]for i in range(len(price))]
+    def memoization(i,length):
+        if i==0:
+            return length*price[i]
+        if dp[i][length]!=-1:
+            return dp[i][length]
+        notTake=solve(i-1,length)
+        take=-math.inf
+        rodLength=i+1
+        if rodLength<=length:
+            take=solve(i,length-rodLength)+price[i]
+        dp[i][length]= max(take,notTake)
+        return dp[i][length]
+
+    def recursive(i,length):
+        if i==0:
+            return length*price[i]
+        notTake=solve(i-1,length)
+        take=-math.inf
+        rodLength=i+1
+        if rodLength<=length:
+            take=solve(i,length-rodLength)+price[i]
+        return max(take,notTake)
+    return solve(len(price)-1,n)
