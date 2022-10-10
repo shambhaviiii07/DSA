@@ -1,0 +1,68 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/edit-distance_630420?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+def editDistance(s, t) :
+
+    SPACE OPTIMIZATION
+    
+    prev=[0 for j in range(len(t)+1)]
+    curr=[0 for j in range(len(t)+1)]
+    for j in range(len(t)+1):
+        prev[j]=j
+    for i in range(1,len(s)+1):
+        curr[0]=i
+        for j in range(1,len(t)+1):
+            if s[i-1]==t[j-1]:
+                curr[j]=prev[j-1]
+            else:
+                curr[j]=min(prev[j-1],prev[j],curr[j-1])+1
+        prev=curr
+    return prev[len(t)]
+    
+    
+    TABULATION
+    
+    dp=[[math.inf for j in range(len(t)+1)]for i in range(len(s)+1)]
+    for j in range(1,len(t)+1):
+        dp[0][j]=j
+    for i in range(1,len(s)+1):
+        dp[i][0]=i
+    dp[0][0]=0
+    for i in range(1,len(s)+1):
+        for j in range(1,len(t)+1):
+            if s[i-1]==t[j-1]:
+                dp[i][j]=dp[i-1][j-1]
+            else:
+                dp[i][j]=min(dp[i-1][j-1],dp[i-1][j],dp[i][j-1])+1
+    return dp[len(s)][len(t)]
+
+    dp=[[-1 for j in range(len(t)+1)]for i in range(len(s)+1)]
+    def memoization(i,j):
+        if i==0 and j==0:
+            return 0
+        if i==0:
+            return j
+        if j==0:
+            return i
+        if dp[i][j]!=-1:
+            return dp[i][j]
+        if s[i-1]==t[j-1]:
+            dp[i][j]= solve(i-1,j-1)
+            return dp[i][j]
+        else:
+            dp[i][j]= min(solve(i-1,j),solve(i,j-1),solve(i-1,j-1))+1
+            return dp[i][j]
+    return solve(len(s),len(t))
+    
+    
+    def recursion(i,j):
+        if i==0 and j==0:
+            return 0
+        if i==0:
+            return j
+        if j==0:
+            return i
+        if s[i-1]==t[j-1]:
+            return solve(i-1,j-1)
+        else:
+            return min(solve(i-1,j),solve(i,j-1),solve(i-1,j-1))+1
+    return solve(len(s),len(t))
