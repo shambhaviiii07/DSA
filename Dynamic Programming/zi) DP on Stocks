@@ -1,0 +1,328 @@
+-------------------------------------------------------------------Best Time to Buy and Sell Stock----------------------------------------------------------
+
+Problem Link--->https://www.codingninjas.com/codestudio/problems/stocks-are-profitable_893405?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+def maximumProfit(prices):
+    minimum=prices[0]
+    profit=0
+    for i in range(1,len(prices)):
+        if prices[i]>minimum:
+            profit=max(profit,prices[i]-minimum)
+        minimum=min(minimum,prices[i])
+    return profit
+    
+-------------------------------------------------------------------Best Time to Buy and Sell Stock II---------------------------------------------------------
+
+
+Problem Link--->https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/
+
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+    
+    SPACE OPTIMIZATION
+    
+    ahead,curr=[0]*2,[0]*2
+    for i in range(len(prices)-1,-1,-1):
+        for buy in range(2):
+            if buy:
+                curr[buy]=max(-prices[i]+ahead[0],ahead[buy])
+            else:
+                curr[buy]=max(prices[i]+ahead[1],ahead[buy])
+        ahead=curr
+    return ahead[1]
+    
+TABULATION
+    
+    dp=[[0 for j in range(2)]for i in range(len(prices)+1)]
+        for i in range(len(prices)-1,-1,-1):
+            for buy in range(2):
+                if buy:
+                    dp[i][buy]=max(-prices[i]+dp[i+1][0],dp[i+1][buy])
+                else:
+                    dp[i][buy]=max(prices[i]+dp[i+1][1],dp[i+1][buy])
+        return dp[0][1]
+    
+MEMOIZATION
+    
+        dp=[[-1 for j in range(2)]for i in range(len(prices))]
+        def solve(i,buy):
+            if i==len(prices):
+                return 0
+            if dp[i][buy]!=-1:
+                return dp[i][buy]
+            if buy:
+                dp[i][buy]= max(-prices[i]+solve(i+1,0),solve(i+1,buy))
+                return dp[i][buy]
+            else:
+                dp[i][buy]= max(prices[i]+solve(i+1,1),solve(i+1,buy))
+                return dp[i][buy]
+        return solve(0,1)
+        
+RECURSION   
+     
+        def solve(i,buy):
+            if i==len(prices):
+                return 0
+            
+            if buy:
+                return max(-prices[i]+solve(i+1,0),solve(i+1,buy))
+            else:
+                return max(prices[i]+solve(i+1,1),solve(i+1,buy))
+        return solve(0,1)
+
+
+
+--------------------------------------------------------------------Best Time to Buy and Sell Stock III---------------------------------------------------------
+
+Problem Link--->https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+
+Space Optimization
+        after,curr=[[0 for transactionNumber in range(3)]for buy in range(2)],[[0 for transactionNumber in range(3)]for buy in range(2)]
+        for i in range(len(prices)-1,-1,-1):
+            for buy in range(2):
+                for transactionNumber in range(1,3):
+                    if buy:
+                        curr[buy][transactionNumber]= max(-prices[i]+after[1-buy][transactionNumber],after[buy][transactionNumber])
+                    else:
+                        curr[buy][transactionNumber]= max(prices[i]+after[1-buy][transactionNumber-1],after[buy][transactionNumber])
+            after=curr
+        return after[1][2]
+
+
+Tabulation
+    
+        dp=[[[0 for transactionNumber in range(3)]for buy in range(2)]for i in range(len(prices)+1)]
+        for i in range(len(prices)-1,-1,-1):
+            for buy in range(2):
+                for transactionNumber in range(1,3):
+                    if buy:
+                        dp[i][buy][transactionNumber]= max(-prices[i]+dp[i+1][1-buy][transactionNumber],dp[i+1][buy][transactionNumber])
+                    else:
+                        dp[i][buy][transactionNumber]= max(prices[i]+dp[i+1][1-buy][transactionNumber-1],dp[i+1][buy][transactionNumber])
+        return dp[0][1][2]
+
+Memoization
+
+        dp=[[[-1 for transactionNumber in range(3)]for buy in range(2)]for i in range(len(prices))]
+        def solve(i,buy,transactionNumber):
+            if transactionNumber==0 or i==len(prices):
+                return 0
+            if dp[i][buy][transactionNumber]!=-1:
+                return dp[i][buy][transactionNumber]
+            if buy:
+                dp[i][buy][transactionNumber]= max(-prices[i]+solve(i+1,1-buy,transactionNumber),solve(i+1,buy,transactionNumber))
+            else:
+                dp[i][buy][transactionNumber]= max(prices[i]+solve(i+1,1-buy,transactionNumber-1),solve(i+1,buy,transactionNumber))
+            return dp[i][buy][transactionNumber]
+        return solve(0,1,2)
+
+Recursion
+
+        def solve(i,buy,transactionNumber):
+            if transactionNumber==0 or i==len(prices):
+                return 0
+            if buy:
+                return max(-prices[i]+solve(i+1,1-buy,transactionNumber),solve(i+1,buy,transactionNumber))
+            else:
+                return max(prices[i]+solve(i+1,1-buy,transactionNumber+1),solve(i+1,buy,transactionNumber))
+        return solve(0,1,2)
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+    
+Tabulation
+    
+      dp=[[[0 for transactionNumber in range(4)]for buy in range(2)]for i in range(len(prices)+1)]
+        for i in range(len(prices)-1,-1,-1):
+            for buy in range(2):
+                for transactionNumber in range(3):
+                    if buy:
+                        dp[i][buy][transactionNumber]= max(-prices[i]+dp[i+1][1-buy][transactionNumber],dp[i+1][buy][transactionNumber])
+                    else:
+                        dp[i][buy][transactionNumber]= max(prices[i]+dp[i+1][1-buy][transactionNumber+1],dp[i+1][buy][transactionNumber])
+        return dp[0][1][1]
+    
+    
+Memoization
+    
+        dp=[[[-1 for transactionNumber in range(3)]for buy in range(2)]for i in range(len(prices))]
+        def solve(i,buy,transactionNumber):
+            if transactionNumber==2 or i==len(prices):
+                return 0
+            if dp[i][buy][transactionNumber]!=-1:
+                return dp[i][buy][transactionNumber]
+            if buy:
+                dp[i][buy][transactionNumber]= max(-prices[i]+solve(i+1,1-buy,transactionNumber),solve(i+1,buy,transactionNumber))
+            else:
+                dp[i][buy][transactionNumber]= max(prices[i]+solve(i+1,1-buy,transactionNumber+1),solve(i+1,buy,transactionNumber))
+            return dp[i][buy][transactionNumber]
+        return solve(0,1,0)
+
+
+Recursion
+
+        def solve(i,buy,transactionNumber):
+            if transactionNumber==2 or i==len(prices):
+                return 0
+            if buy:
+                return max(-prices[i]+solve(i+1,1-buy,transactionNumber),solve(i+1,buy,transactionNumber))
+            else:
+                return max(prices[i]+solve(i+1,1-buy,transactionNumber+1),solve(i+1,buy,transactionNumber))
+        return solve(0,1,0)
+
+-----------------------------------------------------------------Buy and Stock Sell IV-------------------------------------------------------------------
+
+Problem Link--->https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/description/
+
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+    
+Space Optimization
+    
+        after,curr=[[0 for transactionNumber in range(k+1)]for buy in range(2)],[[0 for transactionNumber in range(k+1)]for buy in range(2)]
+        for i in range(len(prices)-1,-1,-1):
+            for buy in range(2):
+                for transactionNumber in range(1,k+1):
+                    if buy:
+                        curr[buy][transactionNumber]= max(-prices[i]+after[1-buy][transactionNumber],after[buy][transactionNumber])
+                    else:
+                        curr[buy][transactionNumber]= max(prices[i]+after[1-buy][transactionNumber-1],after[buy][transactionNumber])
+            after=curr
+        return after[1][k]
+
+Tabulation
+
+        dp=[[[0 for transactionNumber in range(k+1)]for buy in range(2)]for i in range(len(prices)+1)]
+        for i in range(len(prices)-1,-1,-1):
+            for buy in range(2):
+                for transactionNumber in range(1,k+1):
+                    if buy:
+                        dp[i][buy][transactionNumber]= max(-prices[i]+dp[i+1][1-buy][transactionNumber],dp[i+1][buy][transactionNumber])
+                    else:
+                        dp[i][buy][transactionNumber]= max(prices[i]+dp[i+1][1-buy][transactionNumber-1],dp[i+1][buy][transactionNumber])
+        return dp[0][1][k]
+
+Memoization
+
+        dp=[[[-1 for transactionNumber in range(k+1)]for buy in range(2)]for i in range(len(prices))]
+        def solve(i,buy,transactionNumber):
+            if transactionNumber==0 or i==len(prices):
+                return 0
+            if dp[i][buy][transactionNumber]!=-1:
+                return dp[i][buy][transactionNumber]
+            if buy:
+                dp[i][buy][transactionNumber]= max(-prices[i]+solve(i+1,1-buy,transactionNumber),solve(i+1,buy,transactionNumber))
+            else:
+                dp[i][buy][transactionNumber]= max(prices[i]+solve(i+1,1-buy,transactionNumber-1),solve(i+1,buy,transactionNumber))
+            return dp[i][buy][transactionNumber]
+        return solve(0,1,k)
+
+Recursion
+
+        def solve(i,buy,transactionNumber):
+            if transactionNumber==0 or i==len(prices):
+                return 0
+            if buy:
+                return max(-prices[i]+solve(i+1,1-buy,transactionNumber),solve(i+1,buy,transactionNumber))
+            else:
+                return max(prices[i]+solve(i+1,1-buy,transactionNumber+1),solve(i+1,buy,transactionNumber))
+        return solve(0,1,k)
+
+-----------------------------------------------------------Buy and Sell Stocks With Cooldown---------------------------------------------------------------------
+
+Problem Link--->https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/description/
+
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+    
+Space Optimization
+
+
+        curr,f1,f2=[0 for j in range(2)],[0 for j in range(2)],[0 for j in range(2)]
+        for i in range(len(prices)-1,-1,-1):
+            for buy in range(2):
+                if buy:
+                    curr[buy]=max(-prices[i]+f1[0],f1[1])
+                else:
+                    curr[buy]=max(prices[i]+f2[1],f1[0]) 
+            f2=f1
+            f1=curr
+        return curr[1]
+        
+Tabulation    
+   
+        dp=[[0 for j in range(2)]for i in range(len(prices)+2)]
+        for i in range(len(prices)-1,-1,-1):
+            for buy in range(2):
+                if buy:
+                    dp[i][buy]=max(-prices[i]+dp[i+1][0],dp[i+1][1])
+                else:
+                    dp[i][buy]=max(prices[i]+dp[i+2][1],dp[i+1][0]) 
+        return dp[0][1]
+        
+Memoization
+        
+        dp=[[-1 for j in range(2)]for i in range(len(prices))]
+        def solve(i,buy):
+            if i>=len(prices):
+                return 0
+            if dp[i][buy]!=-1:return dp[i][buy]
+            if buy:
+                dp[i][buy]= max(-prices[i]+solve(i+1,0),solve(i+1,1))
+            else:
+                dp[i][buy]= max(prices[i]+solve(i+2,1),solve(i+1,0))
+            return dp[i][buy]
+        return solve(0,1)
+        
+        
+Recursion
+        
+        def solve(i,buy):
+            if i>=len(prices):
+                return 0
+            if buy:
+                return max(-prices[i]+solve(i+1,0),solve(i+1,1))
+            else:
+                return max(prices[i]+solve(i+2,1),solve(i+1,0))
+        return solve(0,1)
+
+---------------------------------------------------Buy and Sell Stocks With Transaction Fee ---------------------------------------------------------------
+Problem Link--->https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/description/
+
+class Solution:
+    def maxProfit(self, prices: List[int], fee: int) -> int:
+    
+Memoization
+    
+        dp=[[-1 for j in range(2)]for i in range(len(prices))]
+        def solve(i,buy):
+            if i==len(prices):
+                return 0
+            if dp[i][buy]!=-1:
+                return dp[i][buy]
+            if buy:
+                dp[i][buy]= max(-prices[i]-fee+solve(i+1,0),solve(i+1,1))
+            else:
+                dp[i][buy]= max(prices[i]+solve(i+1,1),solve(i+1,0))
+            return dp[i][buy]
+        return solve(0,1)
+
+Recursion
+
+        def solve(i,buy):
+            if i==len(prices):
+                return 0
+            if buy:
+                return max(-prices[i]-fee+solve(i+1,0),solve(i+1,1))
+            else:
+                return max(prices[i]+solve(i+1,1),solve(i+1,0))
+        return solve(0,1)
+
+
