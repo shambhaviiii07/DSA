@@ -1,0 +1,23 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/divisible-set_3754960?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+def divisibleSet(arr: List[int]) -> List[int]:
+    n=len(arr)
+    arr.sort()
+    dp=[1 for i in range(n)]
+    hash=[i for i in range(n)]
+    for i in range(n):
+        for prev in range(i):
+            if arr[i]%arr[prev]==0 and 1+dp[prev]>dp[i]:
+                dp[i]=dp[prev]+1
+                hash[i]=prev
+    ans,lastIndex=-1,-1
+    for i in range(n):
+        if ans<dp[i]:
+            ans=dp[i]
+            lastIndex=i
+    temp=[arr[lastIndex]]
+    while hash[lastIndex]!=lastIndex:
+        lastIndex=hash[lastIndex]
+        temp.append(arr[lastIndex])
+    temp.reverse()
+    return temp
