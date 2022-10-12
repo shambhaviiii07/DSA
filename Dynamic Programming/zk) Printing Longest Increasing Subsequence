@@ -1,0 +1,25 @@
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        hash=[i for i in range(len(nums))]
+        dp=[1 for i in range(len(nums))]
+        for i in range(len(nums)):
+            for prev in range(i):
+                if nums[prev]<nums[i] and dp[prev]+1>dp[i]:
+                    dp[i]=dp[prev]+1
+                    hash[i]=prev
+        ans=-1
+        lastIndex=-1
+        for i in range(len(nums)):
+            if dp[i]>ans:
+                lastIndex=i
+                ans=dp[i]
+        x=ans
+        ans=[nums[lastIndex]]
+
+        while lastIndex!=hash[lastIndex]:
+            lastIndex=hash[lastIndex]
+            ans.append(nums[lastIndex])
+            
+        for i in range(len(ans)-1,-1,-1):
+            print(ans[i],' ')
+        return x
