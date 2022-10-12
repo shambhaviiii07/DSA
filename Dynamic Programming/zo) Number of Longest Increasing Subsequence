@@ -1,0 +1,20 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/number-of-longest-increasing-subsequence_3751627?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+import math
+def findNumberOfLIS(arr: List[int]) -> int:
+    count,dp=[1 for i in range(len(arr))],[1 for i in range(len(arr))]
+    maxi=-math.inf
+    for i in range(len(arr)):
+        for prev in range(i):
+            if arr[i]>arr[prev] and dp[i]<dp[prev]+1:
+                dp[i]=dp[prev]+1
+                count[i]=count[prev]
+            elif arr[i]>arr[prev] and dp[i]==dp[prev]+1:
+                count[i]+=count[prev]
+        maxi=max(maxi,dp[i])
+    ans=0
+    for i in range(len(arr)):
+        if dp[i]==maxi:
+            ans+=count[i]
+    return ans
+                
