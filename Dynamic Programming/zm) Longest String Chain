@@ -1,0 +1,42 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/longest-string-chain_3752111?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+class Solution:
+    def checkPossibility(self,a,b):
+        if len(a)-len(b)!=1:
+            return False
+        i,j=0,0
+        flag=False
+        while i<len(a) and j<len(b):
+            if a[i]!=b[j]:
+                if flag:
+                    return False
+                else:
+                    flag=True
+                    i+=1
+            else:
+                i+=1
+                j+=1
+        return True
+    def longestStrChain(self, words: List[str]) -> int:
+        words = sorted(words, key = lambda x: (len(x), x))
+        dp=[1 for i in range(len(words))]
+        hash=[i for i in range(len(words))]
+        maxi=-math.inf
+        for i in range(len(words)):
+            for prev in range(i):
+                if self.checkPossibility(words[i],words[prev]) and dp[i]<dp[prev]+1:
+                    dp[i]=dp[prev]+1
+                    hash[i]=prev
+            maxi=max(maxi,dp[i])
+        lastIndex=-1
+        temp=-1
+        for i in range(len(words)):
+            if temp<dp[i]:
+                temp=dp[i]
+                lastIndex=i 
+        ans=[words[lastIndex]]
+        while hash[lastIndex]!=lastIndex:
+            lastIndex=hash[lastIndex]
+            ans.append(words[lastIndex])
+        print(ans)
+        return maxi
