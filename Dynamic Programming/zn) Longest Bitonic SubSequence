@@ -1,0 +1,17 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/longest-bitonic-sequence_1062688?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=1
+
+def longestBitonicSequence(arr, n):
+    dpLeft=[1 for i in range(n)]
+    dpRight=[1 for i in range(n)]
+    for i in range(n):
+        for prev in range(i):
+            if arr[i]>arr[prev] and dpLeft[prev]+1>dpLeft[i]:
+                dpLeft[i]=dpLeft[prev]+1
+    for i in range(n-1,-1,-1):
+        for prev in range(n-1,i,-1):
+            if arr[prev]<arr[i] and dpRight[prev]+1>dpRight[i]:
+                dpRight[i]=dpRight[prev]+1
+    maxLength=1
+    for i in range(n):
+        maxLength=max(maxLength,dpRight[i]+dpLeft[i]-1)
+    return maxLength
