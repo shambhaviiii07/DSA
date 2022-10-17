@@ -1,0 +1,70 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/cost-to-cut-a-chocolate_3208460?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos&leftPanelTab=0
+
+def cost(n: int, c: int, cuts: List[int]) -> int:
+
+    Tabulation
+
+    dp=[[0 for j in range(c+2)]for i in range(c+2)]
+    cuts=[0]+cuts+[n]
+    cuts.sort()
+    for i in range(c,0,-1):
+        for j in range(1,c+1):
+            if i>j:
+                continue
+            mini=math.inf
+            for cut in range(i,j+1):
+                cost=cuts[j+1]-cuts[i-1]+dp[i][cut-1]+dp[cut+1][j]
+                mini=min(mini,cost)
+            dp[i][cut]=mini
+    return dp[1][c]
+    
+    Memoization
+    
+    return dp[1][c]
+    dp=[[-1 for j in range(len(cuts)+1)]for i in range(len(cuts)+1)]
+    def memoization(i,j):
+        if i>j:
+            return 0
+        if dp[i][j]!=-1:
+            return dp[i][j]
+        mini=math.inf
+        for cut in range(i,j+1):
+            cost=cuts[j+1]-cuts[i-1]+memoization(i,cut-1)+memoization(cut+1,j)
+            mini=min(mini,cost)
+        dp[i][j]= mini
+        return dp[i][j]
+    cuts=[0]+cuts+[n]
+    cuts.sort()
+    return memoization(1,c)
+    
+    Memoization
+    
+    d={}
+    def memoization(i,j):
+        if i>j:
+            return 0
+        if (i,j) in d:
+            return d[(i,j)]
+        mini=math.inf
+        for cut in range(i,j+1):
+            cost=cuts[j+1]-cuts[i-1]+memoization(i,cut-1)+memoization(cut+1,j)
+            mini=min(mini,cost)
+        d[(i,j)]=mini
+        return d[(i,j)]
+    cuts=[0]+cuts+[n]
+    cuts.sort()
+    return memoization(1,c)
+    
+    Recursive
+    
+    def recursive(i,j):
+        if i>j:
+            return 0
+        mini=math.inf
+        for cut in range(i,j+1):
+            cost=cuts[j+1]-cuts[i-1]+recursive(i,cut-1)+recursive(cut+1,j)
+            mini=min(mini,cost)
+        return mini
+    cuts=[0]+cuts+[n]
+    cuts.sort()
+    return recursive(1,c)
