@@ -1,0 +1,74 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/palindrome-partitioning_873266?source=youtube&campaign=striver_dp_videos&utm_source=youtube&utm_medium=affiliate&utm_campaign=striver_dp_videos
+
+Tabulation
+
+def isPalindrome(i,j,string):
+    while i<j:
+        if string[i]==string[j]:
+            i+=1
+            j-=1
+        else:
+            return False
+    return True
+def palindromePartitioning(string):
+    dp=[0 for i in range(len(string)+1)]
+    for i in range(len(string)-1,-1,-1):
+        for j in range(i,len(string)):
+            minCost=float('inf')
+            if isPalindrome(i,j,string):
+                cost=1+dp[j+1]
+                minCost=min(minCost,cost)
+        dp[i]=minCost
+    return dp[0]-1
+
+
+
+Memoization
+
+
+def isPalindrome(i,j,string):
+    while i<j:
+        if string[i]==string[j]:
+            i+=1
+            j-=1
+        else:
+            return False
+    return True
+    
+def palindromePartitioning(string):
+    dp=[-1 for i in range(len(string))]
+    def solve(i):
+        if i==len(string):
+            return 0
+        if dp[i]!=-1:
+            return dp[i]
+        minCost=float('inf')
+        for j in range(i,len(string)):
+            if isPalindrome(i,j,string):
+                cost=1+solve(j+1)
+                minCost=min(minCost,cost)
+        dp[i]= minCost
+        return minCost
+    return solve(0)-1
+    
+Recursion
+    
+def isPalindrome(i,j,string):
+    while i<j:
+        if string[i]==string[j]:
+            i+=1
+            j-=1
+        else:
+            return False
+    return True
+def palindromePartitioning(string):
+    def solve(i):
+        if i==len(string):
+            return 0
+        minCost=float('inf')
+        for j in range(i,len(string)):
+            if isPalindrome(i,j,string):
+                cost=1+solve(j+1)
+                minCost=min(minCost,cost)
+        return minCost
+    return solve(0)-1
