@@ -1,0 +1,41 @@
+Problem Link--->https://www.codingninjas.com/codestudio/problems/minimum-elements_3843091?leftPanelTab=0
+
+import math
+from functools import lru_cache
+def minimumElements(num, x):
+    num.sort()
+    dp=[[-1 for j in range(x+1)]for i in range(len(num))]
+    def solve(i,target,count):
+        if target==0:
+            return count
+        if i==-1:
+            return math.inf
+        if dp[i][target] != -1:
+            return dp[i][target]
+        if num[i]<=target:
+            dp[i][target] = min(solve(i,target-num[i],count+1), solve(i-1,target,count))
+        else:
+            dp[i][target] =  solve(i-1,target,count)
+        return dp[i][target]
+    ans= solve(len(num)-1,x,0)
+#     print(dp)
+    if ans!=math.inf:
+        return ans
+    return -1  
+    
+    
+    def solve(i,target,count):
+        if target==0:
+            return count
+        if i==-1:
+            return math.inf
+        notTake=solve(i-1,target,count)
+        take=math.inf
+        if num[i]<=target:
+            take=solve(i,target-num[i],count+1)
+        return min(take,notTake)
+    ans= solve(len(num)-1,x,0)
+    if ans!=math.inf:
+        return ans
+    else:
+        return -1
